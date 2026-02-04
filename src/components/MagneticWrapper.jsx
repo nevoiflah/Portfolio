@@ -1,0 +1,42 @@
+import { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+
+const MagneticWrapper = ({ children }) => {
+    const ref = useRef(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const { left, top, width, height } = ref.current.getBoundingClientRect();
+
+        // Calculate center of element
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
+
+        // Calculate distance from center
+        const x = clientX - centerX;
+        const y = clientY - centerY;
+
+        // Apply strength factor (higher divisor = less movement)
+        setPosition({ x: x * 0.2, y: y * 0.2 });
+    };
+
+    const handleMouseLeave = () => {
+        setPosition({ x: 0, y: 0 });
+    };
+
+    return (
+        <motion.div
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            animate={{ x: position.x, y: position.y }}
+            transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+            className="inline-block"
+        >
+            {children}
+        </motion.div>
+    );
+};
+
+export default MagneticWrapper;
