@@ -19,12 +19,11 @@ const projects = [
         color: "from-green-400 to-emerald-600"
     },
     {
-        title: "NewsHub",
-        description: "Personalized news portal offering global headlines with AI-powered summarization and sentiment analysis. Includes user engagement levels and saved articles.",
-        tags: ["C#", "ASP.NET Core", "JavaScript", "SQL Server"],
-        github: "https://github.com/nevoiflah/NewsHubProject",
-        live: "https://proj.ruppin.ac.il/cgroup17/test2/tar5/pages/index.html",
-        color: "from-blue-500 to-indigo-600"
+        title: "COUNT — Intimacy Journal",
+        description: "A premium, privacy-first mobile tracking app and marketing site. Features secure authentication, proprietary analytics algorithms, and interactive SVG visualizations.",
+        tags: ["React Native", "Next.js", "Firebase", "TypeScript", "Framer Motion"],
+        live: "https://countintimacyjournal.com",
+        color: "from-zinc-400 to-zinc-600"
     }
 ];
 
@@ -54,10 +53,10 @@ const Projects = () => {
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: index * 0.1 }}
                             whileHover={{ y: -10 }}
-                            className="group relative bg-surface/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300"
+                            className="group relative bg-surface/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full"
                         >
-                            <div className={`h-1 w-full bg-gradient-to-r ${project.color} opacity-75 group-hover:opacity-100 transition-opacity`} />
-                            <div className="p-8">
+                            <div className={`h-1 w-full shrink-0 bg-gradient-to-r ${project.color} opacity-75 group-hover:opacity-100 transition-opacity`} />
+                            <div className="p-8 flex flex-col flex-grow">
                                 <h3 className="text-2xl font-bold mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary transition-all">
                                     {project.title}
                                 </h3>
@@ -71,16 +70,18 @@ const Projects = () => {
                                         </span>
                                     ))}
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <a
-                                        href={project.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
-                                    >
-                                        <Github size={18} />
-                                        View Code
-                                    </a>
+                                <div className="flex items-center gap-4 mt-auto">
+                                    {project.github && (
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                                        >
+                                            <Github size={18} />
+                                            View Code
+                                        </a>
+                                    )}
                                     {project.live && (
                                         <a
                                             href={project.live}

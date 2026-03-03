@@ -23,7 +23,7 @@ const Contact = () => {
                     <div className="flex flex-wrap justify-center gap-6">
                         <a
                             href="mailto:nevoiflah@gmail.com"
-                            className="flex items-center gap-3 px-6 py-3 bg-primary hover:bg-primary/90 rounded-full font-medium transition-colors"
+                            className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-primary hover:bg-primary/90 rounded-full font-medium transition-colors"
                         >
                             <Mail size={20} />
                             Say Hello
@@ -32,7 +32,7 @@ const Contact = () => {
                             href="https://github.com/nevoiflah"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                            className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
                         >
                             <Github size={20} />
                             GitHub
@@ -41,7 +41,7 @@ const Contact = () => {
                             href="https://linkedin.com/in/nevo-iflah"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                            className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
                         >
                             <Linkedin size={20} />
                             LinkedIn
@@ -50,7 +50,7 @@ const Contact = () => {
                             href="/Nevo_CV.pdf"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                            className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
                         >
                             <FileText size={20} />
                             Resume

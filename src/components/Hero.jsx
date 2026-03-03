@@ -34,13 +34,13 @@ const Hero = () => {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button
                             onClick={() => window.scrollToSection?.(3)} // Index 3 = Projects
-                            className="px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition-colors cursor-pointer"
+                            className="w-48 px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition-colors cursor-pointer"
                         >
                             View Projects
                         </button>
                         <button
                             onClick={() => window.scrollToSection?.(4)} // Index 4 = Contact
-                            className="px-8 py-3 bg-surface border border-white/10 rounded-full font-medium hover:bg-white/5 transition-colors cursor-pointer"
+                            className="w-48 px-8 py-3 bg-surface border border-white/10 rounded-full font-medium hover:bg-white/5 transition-colors cursor-pointer"
                         >
                             Contact Me
                         </button>
