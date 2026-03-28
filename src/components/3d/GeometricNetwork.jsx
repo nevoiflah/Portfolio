@@ -172,9 +172,7 @@ const GeometricNetwork = ({ count = 400 }) => {
                 <bufferGeometry>
                     <bufferAttribute
                         attach="attributes-position"
-                        count={stars.length / 3}
-                        array={stars}
-                        itemSize={3}
+                        args={[stars, 3]}
                     />
                 </bufferGeometry>
                 <pointsMaterial

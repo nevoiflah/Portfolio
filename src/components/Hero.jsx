@@ -3,7 +3,7 @@ import MagneticWrapper from './MagneticWrapper';
 
 const Hero = () => {
     return (
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+        <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
             {/* Animated Background blobs */}
             {/* Animated Background blobs removed for consistency */}
 

@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { Suspense, lazy, useEffect, Component } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Lenis from 'lenis';
 import Hero from './components/Hero';
@@ -6,9 +6,19 @@ import About from './components/About';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
-import GeometricNetwork from './components/3d/GeometricNetwork';
 import ZSection from './components/ZSection';
 import useIsMobile from './hooks/useIsMobile';
+
+const GeometricNetwork = lazy(() => import('./components/3d/GeometricNetwork'));
+
+class CanvasErrorBoundary extends Component {
+  state = { crashed: false };
+  static getDerivedStateFromError() { return { crashed: true }; }
+  render() {
+    if (this.state.crashed) return <div className="fixed inset-0 -z-10 bg-background" />;
+    return this.props.children;
+  }
+}
 
 function App() {
   const isMobile = useIsMobile();
@@ -25,12 +35,13 @@ function App() {
       touchMultiplier: 2,
     });
 
+    let rafId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     // Helper: Global Scroll Function for buttons
     window.scrollToSection = (index) => {
@@ -58,6 +69,7 @@ function App() {
     };
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       delete window.scrollToSection;
     };
@@ -65,14 +77,20 @@ function App() {
 
   return (
     <div className="min-h-screen text-text selection:bg-primary/30 relative">
-      {/* 3D Background Layer */}
-      <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
-        <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
-          <Suspense fallback={null}>
-            <GeometricNetwork />
-          </Suspense>
-        </Canvas>
-      </div>
+      {/* 3D Background Layer — desktop only */}
+      {!isMobile ? (
+        <CanvasErrorBoundary>
+          <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
+            <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+              <Suspense fallback={null}>
+                <GeometricNetwork />
+              </Suspense>
+            </Canvas>
+          </div>
+        </CanvasErrorBoundary>
+      ) : (
+        <div className="fixed inset-0 -z-10 bg-background" />
+      )}
 
       {isMobile ? (
         // --- MOBILE LAYOUT (Vertical Stack) ---

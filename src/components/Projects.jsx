@@ -11,12 +11,11 @@ const projects = [
         color: "from-yellow-500 to-orange-500"
     },
     {
-        title: "EcoShower",
-        description: "Smart shower system integrating IoT for water conservation. Features dynamic pricing algorithms, real-time usage monitoring, and multi-language support.",
-        tags: ["React", "Node.js", "AWS IoT", "Dynamic Pricing"],
-        github: "https://github.com/nevoiflah/EcoShower-Project",
-        live: "https://d146icdz852jj7.cloudfront.net",
-        color: "from-green-400 to-emerald-600"
+        title: "FOR Ring",
+        description: "Premium smart ring companion app with deep native SDK integration for real-time health monitoring. Features dual-phase Bluetooth sync, HRV & sleep analytics, and a glassmorphism UI.",
+        tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
+        live: "https://foring.co.il",
+        color: "from-blue-500 to-indigo-600"
     },
     {
         title: "COUNT — Intimacy Journal",
@@ -76,9 +75,10 @@ const Projects = () => {
                                             href={project.github}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
                                             className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
                                         >
-                                            <Github size={18} />
+                                            <Github size={18} aria-hidden="true" />
                                             View Code
                                         </a>
                                     )}
@@ -87,9 +87,10 @@ const Projects = () => {
                                             href={project.live}
                                             target="_blank"
                                             rel="noopener noreferrer"
+                                            aria-label={`Visit ${project.title} live website (opens in new tab)`}
                                             className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
                                         >
-                                            <ExternalLink size={18} />
+                                            <ExternalLink size={18} aria-hidden="true" />
                                             Visit Website
                                         </a>
                                     )}
