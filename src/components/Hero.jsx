@@ -31,7 +31,7 @@ const Hero = () => {
                         Computer Science Student & Full Stack Developer
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <button
                             onClick={() => window.scrollToSection?.(3)} // Index 3 = Projects
                             className="w-48 px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition-colors cursor-pointer"

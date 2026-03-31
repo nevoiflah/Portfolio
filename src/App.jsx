@@ -77,29 +77,25 @@ function App() {
 
   return (
     <div className="min-h-screen text-text selection:bg-primary/30 relative">
-      {/* 3D Background Layer — desktop only */}
-      {!isMobile ? (
-        <CanvasErrorBoundary>
-          <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
-            <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
-              <Suspense fallback={null}>
-                <GeometricNetwork />
-              </Suspense>
-            </Canvas>
-          </div>
-        </CanvasErrorBoundary>
-      ) : (
-        <div className="fixed inset-0 -z-10 bg-background" />
-      )}
+      {/* 3D Background Layer */}
+      <CanvasErrorBoundary>
+        <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
+          <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
+            <Suspense fallback={null}>
+              <GeometricNetwork />
+            </Suspense>
+          </Canvas>
+        </div>
+      </CanvasErrorBoundary>
 
       {isMobile ? (
         // --- MOBILE LAYOUT (Vertical Stack) ---
-        <div className="relative z-10 grid gap-0"> {/* No gap, natural flow */}
-          <div className="min-h-screen flex items-center justify-center p-6"><Hero /></div>
-          <div className="min-h-screen flex items-center justify-center p-6"><About /></div>
-          <div className="min-h-screen flex items-center justify-center p-6"><Skills /></div>
-          <div className="min-h-screen flex items-center justify-center p-6"><Projects /></div>
-          <div className="min-h-screen flex items-center justify-center p-6"><Contact /></div>
+        <div className="relative z-10 flex flex-col w-full overflow-hidden">
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
         </div>
       ) : (
         // --- DESKTOP LAYOUT (Warp Tunnel) ---
