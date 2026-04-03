@@ -21,6 +21,7 @@ const GeometricNetwork = ({ count = 400 }) => {
         ], false, 'catmullrom', 0.5);
     }, []);
 
+    /* eslint-disable react-hooks/purity */
     const particles = useMemo(() => {
         const temp = [];
         // Spread particles ALONG the curve with some noise
@@ -54,6 +55,7 @@ const GeometricNetwork = ({ count = 400 }) => {
         }
         return new Float32Array(temp);
     }, []);
+    /* eslint-enable react-hooks/purity */
 
     const dummy = useMemo(() => new THREE.Object3D(), []);
 

@@ -1,5 +1,4 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
 
 const ZSection = ({ children, index, total }) => {
     const { scrollYProgress } = useScroll();
