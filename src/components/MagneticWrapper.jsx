@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const MagneticWrapper = ({ children }) => {
+const MagneticWrapper = ({ children, className = "" }) => {
     const ref = useRef(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -32,7 +32,7 @@ const MagneticWrapper = ({ children }) => {
             onMouseLeave={handleMouseLeave}
             animate={{ x: position.x, y: position.y }}
             transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-            className="inline-block"
+            className={`inline-block ${className}`}
         >
             {children}
         </motion.div>
