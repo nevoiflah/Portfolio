@@ -1,4 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { Code2, Layers, Cloud, GraduationCap } from 'lucide-react';
+
+const statCards = [
+    { icon: Code2, value: '3+', label: 'Years Coding' },
+    { icon: Layers, value: '5+', label: 'Projects Built' },
+    { icon: Cloud, value: 'AWS', label: 'Certified' },
+    { icon: GraduationCap, value: 'B.Sc', label: 'CS Student' },
+];
 
 const About = () => {
     const shouldReduceMotion = useReducedMotion();
@@ -41,19 +49,17 @@ const About = () => {
                             </motion.p>
                         </div>
 
-                        <motion.div variants={itemVariants} className="relative">
-                            <div className="absolute inset-0 bg-gradient-to-tr from-primary to-secondary rounded-2xl blur-lg opacity-20" />
-                            <div className="relative p-8">
-                                <h3 className="text-xl font-bold mb-4">Focus Areas</h3>
-                                <ul className="space-y-3">
-                                    {['Full Stack Development', 'Cloud Architecture (AWS)', 'IoT Integrations', 'AI & Machine Learning'].map((item, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-muted">
-                                            <span className="w-2 h-2 rounded-full bg-secondary shrink-0" aria-hidden="true" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
+                        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
+                            {statCards.map(({ icon: Icon, value, label }) => (
+                                <div
+                                    key={label}
+                                    className="glass-card p-5 flex flex-col items-center gap-2 text-center"
+                                >
+                                    <Icon size={22} className="text-primary" aria-hidden="true" />
+                                    <span className="text-2xl font-bold text-text">{value}</span>
+                                    <span className="text-xs text-muted">{label}</span>
+                                </div>
+                            ))}
                         </motion.div>
                     </div>
                 </motion.div>

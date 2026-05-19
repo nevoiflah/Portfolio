@@ -86,6 +86,17 @@ const Contact = () => {
                             </a>
                         </MagneticWrapper>
                     </motion.div>
+
+                    {/* Visible email fallback */}
+                    <motion.p variants={itemVariants} className="mt-8 text-muted text-sm">
+                        Or reach me directly at{' '}
+                        <a
+                            href="mailto:nevoiflah@gmail.com"
+                            className="text-primary hover:underline underline-offset-2"
+                        >
+                            nevoiflah@gmail.com
+                        </a>
+                    </motion.p>
                 </motion.div>
 
                 <footer className="mt-20 text-center text-muted text-sm">

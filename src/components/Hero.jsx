@@ -1,5 +1,12 @@
+import { Fragment } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import MagneticWrapper from './MagneticWrapper';
+
+const stats = [
+    { value: '3+', label: 'Years Coding' },
+    { value: '5+', label: 'Projects Built' },
+    { value: 'AWS', label: 'Certified' },
+];
 
 const Hero = () => {
     const shouldReduceMotion = useReducedMotion();
@@ -49,9 +56,22 @@ const Hero = () => {
                         Nevo Iflah
                     </motion.h1>
 
-                    <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted mb-8 max-w-2xl mx-auto">
+                    <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted mb-6 max-w-2xl mx-auto">
                         Computer Science Student & Full Stack Developer
                     </motion.p>
+
+                    {/* Credibility stats */}
+                    <motion.div variants={itemVariants} className="flex justify-center items-center mb-10">
+                        {stats.map(({ value, label }, i) => (
+                            <Fragment key={label}>
+                                {i > 0 && <span className="w-px h-10 bg-white/10 mx-6 sm:mx-10" aria-hidden="true" />}
+                                <div className="text-center">
+                                    <div className="text-2xl font-bold text-text">{value}</div>
+                                    <div className="text-xs text-muted mt-0.5 whitespace-nowrap">{label}</div>
+                                </div>
+                            </Fragment>
+                        ))}
+                    </motion.div>
 
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <MagneticWrapper>

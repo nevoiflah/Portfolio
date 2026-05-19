@@ -1,4 +1,26 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import {
+    SiJavascript, SiTypescript, SiPython, SiHtml5,
+    SiReact, SiNodedotjs, SiDotnet, SiTailwindcss, SiBootstrap, SiFlask,
+    SiGit, SiDocker,
+} from 'react-icons/si';
+
+const techConfig = {
+    'JavaScript (ES6+)': { icon: SiJavascript, color: '#F7DF1E' },
+    'TypeScript':        { icon: SiTypescript,  color: '#3178C6' },
+    'C#':                { icon: SiDotnet,      color: '#9B4F96' },
+    'Python':            { icon: SiPython,      color: '#3776AB' },
+    'HTML5/CSS3':        { icon: SiHtml5,       color: '#E34F26' },
+    'React':             { icon: SiReact,       color: '#61DAFB' },
+    'React Native':      { icon: SiReact,       color: '#61DAFB' },
+    'Node.js':           { icon: SiNodedotjs,   color: '#339933' },
+    'ASP.NET Core':      { icon: SiDotnet,      color: '#512BD4' },
+    'Tailwind CSS':      { icon: SiTailwindcss, color: '#06B6D4' },
+    'Bootstrap':         { icon: SiBootstrap,   color: '#7952B3' },
+    'Flask':             { icon: SiFlask,       color: '#AAAAAA' },
+    'Git & GitHub':      { icon: SiGit,         color: '#F05032' },
+    'Docker':            { icon: SiDocker,      color: '#2496ED' },
+};
 
 const skills = {
     "Languages": ["JavaScript (ES6+)", "TypeScript", "C#", "Python", "SQL", "Java", "HTML5/CSS3"],
@@ -67,11 +89,21 @@ const Skills = () => {
                                 <div className="relative z-10">
                                     <h3 className="text-xl font-bold mb-6 text-primary">{category}</h3>
                                     <div className="flex flex-wrap gap-2">
-                                        {items.map((skill, i) => (
-                                            <span key={i} className="px-3 py-1 bg-background rounded-lg text-sm text-muted border border-white/5">
-                                                {skill}
-                                            </span>
-                                        ))}
+                                        {items.map((skill, i) => {
+                                            const config = techConfig[skill];
+                                            return (
+                                                <span key={i} className="px-3 py-1 bg-background rounded-lg text-sm text-muted border border-white/5 flex items-center gap-1.5">
+                                                    {config && (
+                                                        <config.icon
+                                                            style={{ color: config.color }}
+                                                            className="shrink-0 text-[13px]"
+                                                            aria-hidden="true"
+                                                        />
+                                                    )}
+                                                    {skill}
+                                                </span>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </motion.div>

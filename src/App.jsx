@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect, Component } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { motion } from 'framer-motion';
 import Lenis from 'lenis';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -8,6 +9,7 @@ import Skills from './components/Skills';
 import Contact from './components/Contact';
 import ZSection from './components/ZSection';
 import NavDots from './components/NavDots';
+import NavDotsDesktop from './components/NavDotsDesktop';
 import useIsMobile from './hooks/useIsMobile';
 
 const GeometricNetwork = lazy(() => import('./components/3d/GeometricNetwork'));
@@ -74,16 +76,24 @@ function App() {
     <div className="min-h-screen text-text selection:bg-primary/30 relative">
       <a href="#hero" className="skip-link">Skip to content</a>
 
-      {/* 3D Background Layer */}
+      {/* 3D Background — fades in after mount */}
       <CanvasErrorBoundary>
-        <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
+        <motion.div
+          className="fixed top-0 left-0 w-full h-full -z-10 bg-background"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.9, delay: 0.2 }}
+        >
           <Canvas camera={{ position: [0, 0, 15], fov: 45 }}>
             <Suspense fallback={null}>
               <GeometricNetwork />
             </Suspense>
           </Canvas>
-        </div>
+        </motion.div>
       </CanvasErrorBoundary>
+
+      {/* Navigation */}
+      <NavDotsDesktop />
 
       {isMobile ? (
         // --- MOBILE LAYOUT (Vertical Stack) ---
