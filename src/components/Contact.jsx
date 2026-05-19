@@ -1,29 +1,30 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Linkedin, Github, FileText } from 'lucide-react';
-
 import MagneticWrapper from './MagneticWrapper';
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.1,
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
-};
-
 const Contact = () => {
+    const shouldReduceMotion = useReducedMotion();
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: shouldReduceMotion ? 0 : 0.08,
+                delayChildren: shouldReduceMotion ? 0 : 0.05,
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 20 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
+
+    const linkClass = "flex items-center justify-center gap-3 w-40 px-6 py-3 rounded-full font-medium transition-all active:scale-95 active:opacity-80";
+
     return (
         <section id="contact" className="py-20 relative overflow-hidden">
-            {/* Background decoration removed for consistency */}
-
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     variants={containerVariants}
@@ -42,7 +43,7 @@ const Contact = () => {
                             <a
                                 href="mailto:nevoiflah@gmail.com"
                                 aria-label="Send email to Nevo Iflah"
-                                className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-primary hover:bg-primary/90 rounded-full font-medium transition-colors"
+                                className={`${linkClass} bg-primary hover:bg-primary/90`}
                             >
                                 <Mail size={20} aria-hidden="true" />
                                 Say Hello
@@ -54,7 +55,7 @@ const Contact = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="GitHub profile (opens in new tab)"
-                                className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                                className={`${linkClass} bg-surface border border-white/10 hover:bg-white/5`}
                             >
                                 <Github size={20} aria-hidden="true" />
                                 GitHub
@@ -66,7 +67,7 @@ const Contact = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="LinkedIn profile (opens in new tab)"
-                                className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                                className={`${linkClass} bg-surface border border-white/10 hover:bg-white/5`}
                             >
                                 <Linkedin size={20} aria-hidden="true" />
                                 LinkedIn
@@ -78,7 +79,7 @@ const Contact = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Download resume PDF (opens in new tab)"
-                                className="flex items-center justify-center gap-3 w-40 px-6 py-3 bg-surface border border-white/10 hover:bg-white/5 rounded-full font-medium transition-colors"
+                                className={`${linkClass} bg-surface border border-white/10 hover:bg-white/5`}
                             >
                                 <FileText size={20} aria-hidden="true" />
                                 Resume

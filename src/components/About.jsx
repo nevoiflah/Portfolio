@@ -1,22 +1,24 @@
-import { motion } from 'framer-motion';
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.1,
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
-};
+import { motion, useReducedMotion } from 'framer-motion';
 
 const About = () => {
+    const shouldReduceMotion = useReducedMotion();
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: shouldReduceMotion ? 0 : 0.08,
+                delayChildren: shouldReduceMotion ? 0 : 0.05,
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 20 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
+
     return (
         <section id="about" className="py-20">
             <div className="container mx-auto px-6">
@@ -27,7 +29,7 @@ const About = () => {
                     viewport={{ once: true, amount: 0.3 }}
                 >
                     <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-6">
+                        <div className="space-y-6 text-left">
                             <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold">About Me</motion.h2>
                             <motion.p variants={itemVariants} className="text-muted leading-relaxed">
                                 Full-Stack Developer with hands-on experience in full-stack web development, AI-integrated systems, and cloud-based applications.
@@ -46,7 +48,7 @@ const About = () => {
                                 <ul className="space-y-3">
                                     {['Full Stack Development', 'Cloud Architecture (AWS)', 'IoT Integrations', 'AI & Machine Learning'].map((item, i) => (
                                         <li key={i} className="flex items-center gap-3 text-muted">
-                                            <span className="w-2 h-2 rounded-full bg-secondary shrink-0" />
+                                            <span className="w-2 h-2 rounded-full bg-secondary shrink-0" aria-hidden="true" />
                                             {item}
                                         </li>
                                     ))}

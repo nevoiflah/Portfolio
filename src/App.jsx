@@ -7,6 +7,7 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import ZSection from './components/ZSection';
+import NavDots from './components/NavDots';
 import useIsMobile from './hooks/useIsMobile';
 
 const GeometricNetwork = lazy(() => import('./components/3d/GeometricNetwork'));
@@ -25,7 +26,7 @@ function App() {
 
   useEffect(() => {
     const lenis = new Lenis({
-      duration: isMobile ? 1.0 : 1.5, // Faster on mobile
+      duration: isMobile ? 1.0 : 1.5,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: 'vertical',
       gestureDirection: 'vertical',
@@ -43,27 +44,21 @@ function App() {
 
     rafId = requestAnimationFrame(raf);
 
-    // Helper: Global Scroll Function for buttons
     window.scrollToSection = (index) => {
-      // Map index to ID for cleaner mobile scrolling, or use math for Desktop Warp
       const ids = ['hero', 'about', 'skills', 'projects', 'contact'];
       const id = ids[index];
       const element = document.getElementById(id);
 
       if (isMobile && element) {
-        // Mobile: Scroll to actual element
         lenis.scrollTo(element, { duration: 1.5 });
       } else {
-        // Desktop (Warp Tunnel): Scroll to calculated 'time' position
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
         let target;
-
         if (index === 4) {
-          target = totalHeight; // Contact: Always go to the very end
+          target = totalHeight;
         } else {
           target = totalHeight * (index / 5);
         }
-
         lenis.scrollTo(target, { duration: 1.5 });
       }
     };
@@ -77,6 +72,8 @@ function App() {
 
   return (
     <div className="min-h-screen text-text selection:bg-primary/30 relative">
+      <a href="#hero" className="skip-link">Skip to content</a>
+
       {/* 3D Background Layer */}
       <CanvasErrorBoundary>
         <div className="fixed top-0 left-0 w-full h-full -z-10 bg-background">
@@ -90,13 +87,16 @@ function App() {
 
       {isMobile ? (
         // --- MOBILE LAYOUT (Vertical Stack) ---
-        <div className="relative z-10 flex flex-col w-full overflow-hidden">
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Contact />
-        </div>
+        <>
+          <NavDots />
+          <div className="relative z-10 flex flex-col w-full overflow-hidden">
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Contact />
+          </div>
+        </>
       ) : (
         // --- DESKTOP LAYOUT (Warp Tunnel) ---
         <div style={{ height: '500vh' }}>

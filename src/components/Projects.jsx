@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Github, ExternalLink } from 'lucide-react';
 
 const projects = [
@@ -26,29 +26,35 @@ const projects = [
     }
 ];
 
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: {
-            staggerChildren: 0.2,
-            delayChildren: 0.1,
-        }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
-};
-
 const Projects = () => {
+    const shouldReduceMotion = useReducedMotion();
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: shouldReduceMotion ? 0 : 0.08,
+                delayChildren: shouldReduceMotion ? 0 : 0.05,
+            }
+        }
+    };
+
+    const itemVariants = {
+        hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 30 },
+        visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+    };
+
     const handleMouseMove = (e) => {
-        const rect = e.currentTarget.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
-        e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+        const el = e.currentTarget;
+        if (el._rafId) return;
+        const { clientX, clientY } = e;
+        el._rafId = requestAnimationFrame(() => {
+            const rect = el.getBoundingClientRect();
+            el.style.setProperty('--mouse-x', `${clientX - rect.left}px`);
+            el.style.setProperty('--mouse-y', `${clientY - rect.top}px`);
+            el._rafId = null;
+        });
     };
 
     return (
@@ -72,14 +78,13 @@ const Projects = () => {
                             <motion.div
                                 key={index}
                                 variants={itemVariants}
-                                whileHover={{ y: -10 }}
+                                whileHover={shouldReduceMotion ? {} : { y: -10 }}
                                 onMouseMove={handleMouseMove}
                                 className="group relative bg-surface/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full"
                             >
-                                {/* Glow Effect Background */}
-                                <div 
-                                    className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 
-                                    style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.06), transparent 40%)' }} 
+                                <div
+                                    className="absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                                    style={{ background: 'radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.06), transparent 40%)' }}
                                 />
 
                                 <div className={`relative z-10 h-1 w-full shrink-0 bg-gradient-to-r ${project.color} opacity-75 group-hover:opacity-100 transition-opacity`} />
@@ -92,7 +97,7 @@ const Projects = () => {
                                     </p>
                                     <div className="flex flex-wrap gap-2 mb-8">
                                         {project.tags.map((tag, i) => (
-                                            <span key={i} className="px-3 py-1 text-xs font-medium bg-white/5 text-gray-300 rounded-full border border-white/5">
+                                            <span key={i} className="px-3 py-1 text-xs font-medium bg-white/5 text-muted rounded-full border border-white/5">
                                                 {tag}
                                             </span>
                                         ))}
@@ -104,7 +109,7 @@ const Projects = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
-                                                className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                                                className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
                                             >
                                                 <Github size={18} aria-hidden="true" />
                                                 View Code
@@ -116,7 +121,7 @@ const Projects = () => {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 aria-label={`Visit ${project.title} live website (opens in new tab)`}
-                                                className="flex items-center gap-2 text-sm font-medium hover:text-primary transition-colors"
+                                                className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
                                             >
                                                 <ExternalLink size={18} aria-hidden="true" />
                                                 Visit Website

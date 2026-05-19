@@ -1,57 +1,45 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 
 const ZSection = ({ children, index, total }) => {
+    const shouldReduceMotion = useReducedMotion();
     const { scrollYProgress } = useScroll();
 
-    // Each section gets a "slice" of total scroll height
-    // e.g. 5 sections -> each gets 0.2 (20%)
     const sectionHeight = 1 / total;
-    const start = (index * sectionHeight);
+    const start = index * sectionHeight;
     const end = start + sectionHeight;
-    const exit = end + (sectionHeight * 0.5); // Linger a bit before disappearing
-
-    // Range for "Coming In" -> "Active" -> "Flying Past"
+    const exit = end + sectionHeight * 0.5;
     const isLast = index === total - 1;
 
-    // 1. Opacity: Approaches 1, stays 1. Last section stays 1 forever.
-    const opacity = useTransform(
+    // Opacity: fade in, stay, fade out. Last section stays visible forever.
+    const opacityTransform = useTransform(
         scrollYProgress,
         [start - 0.05, start, end - 0.05, end],
         isLast ? [0, 1, 1, 1] : [0, 1, 1, 0]
     );
 
-    const scale = useTransform(
+    // Scale: grow in from 0.5, zoom past at 1.15. Disabled for reduced motion.
+    const scaleTransform = useTransform(
         scrollYProgress,
         [start - 0.1, start, end],
-        // Last section stops scaling at 1.0 to fit perfectly
         isLast ? [0.5, 1, 1] : [0.5, 1, 1.15]
     );
 
-    // Z-Index trick: current section must be on top slightly
     const zIndex = useTransform(scrollYProgress, (v) => {
         if (v >= start && v <= end) return 10;
         return 0;
     });
 
-    // Blur effect for distance
-    const filter = useTransform(
-        scrollYProgress,
-        [start - 0.1, start, end - 0.05, end],
-        isLast ? ["blur(10px)", "blur(0px)", "blur(0px)", "blur(0px)"] : ["blur(10px)", "blur(0px)", "blur(0px)", "blur(10px)"]
-    );
-
-    // We toggle display:none so off-screen sections don't block pointer events
+    // Toggle display:none so off-screen sections don't intercept pointer events
     const display = useTransform(scrollYProgress, (v) => {
-        return (v >= start - 0.15 && v <= exit) ? "flex" : "none";
+        return (v >= start - 0.15 && v <= exit) ? 'flex' : 'none';
     });
 
     return (
         <motion.div
             style={{
-                opacity,
-                scale,
+                opacity: opacityTransform,
+                scale: shouldReduceMotion ? 1 : scaleTransform,
                 zIndex,
-                filter,
                 display,
                 position: 'fixed',
                 top: 0,
@@ -60,7 +48,7 @@ const ZSection = ({ children, index, total }) => {
                 height: '100vh',
                 alignItems: 'center',
                 justifyContent: 'center',
-                pointerEvents: 'auto', // Ensure clicks work when visible
+                pointerEvents: 'auto',
             }}
         >
             <div className="w-full max-w-7xl mx-auto px-6">
