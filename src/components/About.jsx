@@ -30,7 +30,7 @@ const About = () => {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
-                    className="grid grid-cols-2 md:grid-cols-4 auto-rows-[minmax(0,1fr)] gap-3 max-w-5xl mx-auto"
+                    className="grid grid-cols-2 md:grid-cols-4 auto-rows-auto md:auto-rows-fr gap-3 max-w-5xl mx-auto"
                 >
                     {/* Bio — large anchor tile */}
                     <motion.div
