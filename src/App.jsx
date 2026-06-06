@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Lenis from 'lenis';
 import Hero from './components/Hero';
 import About from './components/About';
+import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
@@ -52,14 +53,16 @@ function App() {
     rafId = requestAnimationFrame(raf);
 
     window.scrollToSection = (index) => {
-      const ids = ['hero', 'about', 'skills', 'projects', 'contact'];
+      const ids = ['hero', 'about', 'experience', 'skills', 'projects', 'contact'];
+      const count = ids.length;
       const element = document.getElementById(ids[index]);
       if (isMobile && element) {
         lenis.scrollTo(element, { duration: 1.5 });
       } else {
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        // Center on each section's fully-visible scroll window rather than its edge
         lenis.scrollTo(
-          index === 4 ? totalHeight : totalHeight * (index / 5),
+          index === count - 1 ? totalHeight : totalHeight * ((index + 0.5) / count),
           { duration: 1.5 },
         );
       }
@@ -109,6 +112,7 @@ function App() {
             <div className="relative z-10 flex flex-col w-full overflow-hidden">
               <Hero />
               <About />
+              <Experience />
               <Skills />
               <Projects />
               <Contact />
@@ -122,12 +126,13 @@ function App() {
             animate="visible"
             exit="exit"
           >
-            <div style={{ height: '500vh' }}>
-              <ZSection index={0} total={5}><Hero /></ZSection>
-              <ZSection index={1} total={5}><About /></ZSection>
-              <ZSection index={2} total={5}><Skills /></ZSection>
-              <ZSection index={3} total={5}><Projects /></ZSection>
-              <ZSection index={4} total={5}><Contact /></ZSection>
+            <div style={{ height: '600vh' }}>
+              <ZSection index={0} total={6}><Hero /></ZSection>
+              <ZSection index={1} total={6}><About /></ZSection>
+              <ZSection index={2} total={6}><Experience sectionIndex={2} sectionTotal={6} /></ZSection>
+              <ZSection index={3} total={6}><Skills /></ZSection>
+              <ZSection index={4} total={6}><Projects /></ZSection>
+              <ZSection index={5} total={6}><Contact /></ZSection>
             </div>
           </motion.div>
         )}

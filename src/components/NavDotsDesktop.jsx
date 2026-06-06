@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const sections = [
     { label: 'Hero' },
     { label: 'About' },
+    { label: 'Experience' },
     { label: 'Skills' },
     { label: 'Projects' },
     { label: 'Contact' },
@@ -16,7 +17,7 @@ const NavDotsDesktop = () => {
             const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
             if (totalScroll <= 0) return;
             const progress = window.scrollY / totalScroll;
-            setActive(Math.min(4, Math.floor(progress * 5)));
+            setActive(Math.min(5, Math.floor(progress * 6)));
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });

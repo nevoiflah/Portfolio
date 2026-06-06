@@ -4,11 +4,12 @@ import MagneticWrapper from './MagneticWrapper';
 
 /* ── CountUp ─────────────────────────────────────────────────────────── */
 const CountUp = ({ target, suffix = '' }) => {
-    const [count, setCount] = useState(0);
     const shouldReduceMotion = useReducedMotion();
+    // Lazy init avoids a synchronous setState in the effect for reduced-motion users
+    const [count, setCount] = useState(() => (shouldReduceMotion ? target : 0));
 
     useEffect(() => {
-        if (shouldReduceMotion) { setCount(target); return; }
+        if (shouldReduceMotion) return;
 
         // Delay matches when the stats row finishes its entrance animation
         let rafId;
@@ -91,6 +92,17 @@ const Hero = () => {
                     animate="visible"
                     className="max-w-4xl mx-auto"
                 >
+                    {/* Availability status pill */}
+                    <motion.div variants={itemVariants} className="flex justify-center mb-6">
+                        <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-sm text-muted backdrop-blur-sm">
+                            <span className="relative flex h-2 w-2" aria-hidden="true">
+                                <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                            </span>
+                            Available for full-stack roles
+                        </span>
+                    </motion.div>
+
                     {/* Avatar */}
                     <motion.div variants={itemVariants}>
                         <MagneticWrapper>
@@ -113,7 +125,7 @@ const Hero = () => {
                     <motion.h1
                         aria-label="Nevo Iflah"
                         variants={charContainerVariants}
-                        className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-gray-200"
+                        className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] motion-safe:animate-gradient"
                     >
                         {"Nevo Iflah".split("").map((char, i) => (
                             <motion.span
@@ -153,7 +165,7 @@ const Hero = () => {
                     <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <MagneticWrapper>
                             <button
-                                onClick={() => window.scrollToSection?.(3)}
+                                onClick={() => window.scrollToSection?.(4)}
                                 className="w-48 px-8 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 active:scale-95 active:opacity-80 transition-all cursor-pointer block"
                             >
                                 View Projects
@@ -161,7 +173,7 @@ const Hero = () => {
                         </MagneticWrapper>
                         <MagneticWrapper>
                             <button
-                                onClick={() => window.scrollToSection?.(4)}
+                                onClick={() => window.scrollToSection?.(5)}
                                 className="w-48 px-8 py-3 bg-surface border border-white/10 rounded-full font-medium hover:bg-white/5 active:scale-95 active:opacity-80 transition-all cursor-pointer block"
                             >
                                 Contact Me

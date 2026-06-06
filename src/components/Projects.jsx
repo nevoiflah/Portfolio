@@ -16,6 +16,7 @@ const projects = [
         live: "https://www.buddiz.link",
         screenshot: "/screenshots/buddiz.png",
         color: "from-yellow-500 to-orange-500",
+        metric: "Serverless · ~$0 idle cost",
     },
     {
         title: "FOR Ring",
@@ -24,6 +25,7 @@ const projects = [
         live: "https://foring.co.il",
         screenshot: "/screenshots/foring.png",
         color: "from-blue-500 to-indigo-600",
+        metric: "Dual-phase BLE health sync",
     },
     {
         title: "COUNT — Intimacy Journal",
@@ -32,6 +34,7 @@ const projects = [
         live: "https://countintimacyjournal.com",
         screenshot: "/screenshots/count.png",
         color: "from-zinc-400 to-zinc-600",
+        metric: "Privacy-first · on-device",
     },
 ];
 
@@ -88,6 +91,9 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                 style={{ background }}
             />
 
+            {/* Per-project color identity — thin gradient accent at the top edge */}
+            <div className={`relative z-10 h-1 w-full shrink-0 bg-gradient-to-r ${project.color}`} aria-hidden="true" />
+
             {/* Screenshot preview */}
             <div className="relative z-10 shrink-0">
                 <BrowserMockup project={project} />
@@ -95,9 +101,15 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
 
             {/* Content */}
             <div className="relative z-10 p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold mb-3 text-text group-hover:text-primary transition-colors duration-300">
+                <h3 className="text-xl font-bold mb-2 text-text group-hover:text-primary transition-colors duration-300">
                     {project.title}
                 </h3>
+                {project.metric && (
+                    <p className="flex items-center gap-2 mb-3 text-xs font-medium text-muted">
+                        <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.color}`} aria-hidden="true" />
+                        {project.metric}
+                    </p>
+                )}
                 <p className="text-muted mb-5 leading-relaxed text-sm">{project.description}</p>
                 <div className="flex flex-wrap gap-2 mb-6">
                     {project.tags.map((tag, i) => (
