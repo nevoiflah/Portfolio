@@ -37,33 +37,55 @@ const milestones = [
     },
 ];
 
-/* ── Single milestone row (left-rail layout) ─────────────────────────── */
-const Milestone = ({ item, variants }) => {
+/* ── Card content (shared) ───────────────────────────────────────────── */
+const Card = ({ item }) => {
     const { period, title, desc, highlight } = item;
     return (
-        <motion.div variants={variants} className="relative pl-16 pb-8 last:pb-0">
-            {/* Node */}
-            <span
-                className={`absolute left-6 top-1 z-10 flex items-center justify-center w-9 h-9 -translate-x-1/2 rounded-full bg-surface border-2 ${
-                    highlight ? 'border-secondary' : 'border-primary'
-                }`}
-                aria-hidden="true"
-            >
-                {highlight && (
-                    <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary/40" />
-                )}
-                <item.icon size={15} className={highlight ? 'text-secondary' : 'text-primary'} />
+        <div className="glass-card p-4 md:p-5 w-full max-w-sm transition-colors hover:border-primary/30">
+            <span className={`text-[11px] md:text-xs font-semibold uppercase tracking-wider ${highlight ? 'text-secondary' : 'text-primary'}`}>
+                {period}
             </span>
+            <h3 className="text-base md:text-lg font-bold text-text mt-0.5 md:mt-1">{title}</h3>
+            <p className="text-xs md:text-sm text-muted mt-1 leading-relaxed">{desc}</p>
+        </div>
+    );
+};
 
-            {/* Card */}
-            <div className="glass-card p-5 max-w-md transition-colors hover:border-primary/30">
-                <span className={`text-xs font-semibold uppercase tracking-wider ${highlight ? 'text-secondary' : 'text-primary'}`}>
-                    {period}
-                </span>
-                <h3 className="text-lg font-bold text-text mt-1">{title}</h3>
-                <p className="text-sm text-muted mt-1 leading-relaxed">{desc}</p>
+/* ── Node dot (shared) ───────────────────────────────────────────────── */
+const Node = ({ item, className }) => (
+    <span
+        className={`absolute top-1 z-10 flex items-center justify-center w-7 h-7 md:w-9 md:h-9 -translate-x-1/2 rounded-full bg-surface border-2 ${
+            item.highlight ? 'border-secondary' : 'border-primary'
+        } ${className}`}
+        aria-hidden="true"
+    >
+        {item.highlight && (
+            <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary/40" />
+        )}
+        <item.icon size={14} className={item.highlight ? 'text-secondary' : 'text-primary'} />
+    </span>
+);
+
+/* ── Mobile / reduced-motion: compact single left rail ───────────────── */
+const RailMilestone = ({ item, variants }) => (
+    <motion.div variants={variants} className="relative pl-12 pb-6 last:pb-0">
+        <Node item={item} className="left-5" />
+        <Card item={item} />
+    </motion.div>
+);
+
+/* ── Desktop: alternating left / right around a center rail ───────────── */
+const AltMilestone = ({ item, index }) => {
+    const isLeft = index % 2 === 0;
+    return (
+        <div className="relative grid grid-cols-2 gap-10 pb-10 last:pb-0">
+            <Node item={item} className="left-1/2" />
+            <div className={isLeft ? 'col-start-1 flex justify-end pr-8' : 'col-start-2 pl-8'}>
+                <div className={isLeft ? 'text-right' : 'text-left'}>
+                    <Card item={item} />
+                </div>
             </div>
-        </motion.div>
+        </div>
     );
 };
 
@@ -121,22 +143,22 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
     };
 
     const Heading = (
-        <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3">My Journey</h2>
-            <p className="text-muted">From command to code — scroll the path that shaped how I build.</p>
+        <div className="text-center mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-3">My Journey</h2>
+            <p className="text-sm md:text-base text-muted">From command to code — the path that shaped how I build.</p>
         </div>
     );
 
     return (
-        <section id="experience" className="py-20 md:py-0">
+        <section id="experience" className="py-16 md:py-0">
             <div className="container mx-auto px-6">
                 {isScrub ? (
-                    /* ── Desktop: pinned, scroll-scrubbed timeline ──────────────── */
+                    /* ── Desktop: pinned, scroll-scrubbed, alternating timeline ── */
                     <div className="max-w-3xl mx-auto">
                         {Heading}
                         <div ref={stageRef} className="relative h-[56vh] overflow-hidden">
-                            {/* Fixed rail with scroll-driven fill */}
-                            <div className="absolute left-6 top-1 bottom-1 w-px -translate-x-1/2 bg-white/10" aria-hidden="true">
+                            {/* Center rail with scroll-driven fill */}
+                            <div className="absolute left-1/2 top-1 bottom-1 w-px -translate-x-1/2 bg-white/10" aria-hidden="true">
                                 <motion.div
                                     style={{ scaleY: lineScaleY }}
                                     className="w-full h-full origin-top bg-gradient-to-b from-primary to-secondary"
@@ -145,8 +167,8 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
                             {/* Moving track — lead-in / lead-out padding (> fade height)
                                 so the first and last milestones rest fully clear at the extremes */}
                             <motion.div ref={trackRef} style={{ y }} className="pt-16 pb-16">
-                                {milestones.map((item) => (
-                                    <Milestone key={item.title} item={item} variants={{}} />
+                                {milestones.map((item, i) => (
+                                    <AltMilestone key={item.title} item={item} index={i} />
                                 ))}
                             </motion.div>
                             {/* Soft fade masks top/bottom so rows enter/exit gracefully */}
@@ -155,17 +177,17 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
                         </div>
                     </div>
                 ) : (
-                    /* ── Mobile / reduced-motion: reveal-on-view ────────────────── */
+                    /* ── Mobile / reduced-motion: compact reveal-on-view ───────── */
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.2 }}
-                        className="max-w-3xl mx-auto"
+                        className="max-w-md mx-auto"
                     >
                         <motion.div variants={itemVariants}>{Heading}</motion.div>
                         <div className="relative">
-                            <div className="absolute left-6 top-1 bottom-1 w-px -translate-x-1/2 bg-white/10" aria-hidden="true">
+                            <div className="absolute left-5 top-1 bottom-1 w-px -translate-x-1/2 bg-white/10" aria-hidden="true">
                                 <motion.div
                                     variants={{
                                         hidden: { scaleY: shouldReduceMotion ? 1 : 0 },
@@ -175,7 +197,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
                                 />
                             </div>
                             {milestones.map((item) => (
-                                <Milestone key={item.title} item={item} variants={itemVariants} />
+                                <RailMilestone key={item.title} item={item} variants={itemVariants} />
                             ))}
                         </div>
                     </motion.div>
