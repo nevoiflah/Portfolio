@@ -22,6 +22,13 @@
   @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl shadow-xl;
 }
 
+/* 3D flip card — front/back stacked in one grid cell so height tracks the tallest face */
+.flip-3d { perspective: 1200px; }
+.flip-inner { display: grid; transform-style: preserve-3d; }
+.flip-inner > .flip-face { grid-area: 1 / 1; }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-rear { transform: rotateY(180deg); }
+
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
 }

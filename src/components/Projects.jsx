@@ -3,8 +3,43 @@ import {
     motion, AnimatePresence,
     useReducedMotion, useMotionValue, useMotionTemplate,
 } from 'framer-motion';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
+import { SiAppstore } from 'react-icons/si';
 import useIsMobile from '../hooks/useIsMobile';
+
+/* ── App Store action ── mobile: direct link · desktop: flip to QR ────── */
+const AppStoreAction = ({ project, onFlip }) => {
+    const isMobile = useIsMobile();
+
+    /* Mobile — already on the device, deep-link straight to the store */
+    if (isMobile) {
+        return (
+            <a
+                href={project.appStore}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Download ${project.title} on the App Store (opens in new tab)`}
+                className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
+            >
+                <SiAppstore size={16} aria-hidden="true" />
+                App Store
+            </a>
+        );
+    }
+
+    /* Desktop — flip the card to reveal a scannable QR */
+    return (
+        <button
+            type="button"
+            onClick={onFlip}
+            aria-label={`Show App Store download options for ${project.title}`}
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all cursor-pointer"
+        >
+            <SiAppstore size={16} aria-hidden="true" />
+            App Store
+        </button>
+    );
+};
 
 /* ── Data ────────────────────────────────────────────────────────────── */
 const projects = [
@@ -19,7 +54,7 @@ const projects = [
         metric: "Serverless · ~$0 idle cost",
     },
     {
-        title: "FOR Ring",
+        title: "F.O.R Ring",
         description: "Premium smart ring companion app with deep native SDK integration for real-time health monitoring. Features dual-phase Bluetooth sync, HRV & sleep analytics, and a glassmorphism UI.",
         tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
         live: "https://foring.co.il",
@@ -32,6 +67,8 @@ const projects = [
         description: "A premium, privacy-first mobile tracking app and marketing site. Features secure authentication, proprietary analytics algorithms, and interactive SVG visualizations.",
         tags: ["React Native", "Next.js", "Firebase", "TypeScript", "Framer Motion"],
         live: "https://countintimacyjournal.com",
+        appStore: "https://apps.apple.com/app/id6759260989",
+        qr: "/qr/count-appstore.svg",
         screenshot: "/screenshots/count.png",
         color: "from-zinc-400 to-zinc-600",
         metric: "Privacy-first · on-device",
@@ -66,11 +103,12 @@ const BrowserMockup = ({ project }) => {
     );
 };
 
-/* ── ProjectCard ── useMotionValue-driven glow, no CSS custom props ──── */
+/* ── ProjectCard ── glow + optional 3D flip to an App Store QR ───────── */
 const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
     const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(139,92,246,0.10), transparent 40%)`;
+    const [flipped, setFlipped] = useState(false);
 
     const handleMouseMove = (e) => {
         const { left, top } = e.currentTarget.getBoundingClientRect();
@@ -83,68 +121,125 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
             variants={variants}
             whileHover={shouldReduceMotion ? {} : { y: -6 }}
             onMouseMove={handleMouseMove}
-            className="group relative bg-surface/50 backdrop-blur-sm border border-white/5 rounded-2xl overflow-hidden hover:border-primary/30 hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 flex flex-col h-full"
+            className="group relative h-full flip-3d"
         >
-            {/* Motion-value glow — pointer-events-none so links beneath are always clickable */}
             <motion.div
-                className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{ background }}
-            />
+                className="flip-inner h-full"
+                style={{ transformStyle: 'preserve-3d' }}
+                animate={{ rotateY: flipped ? 180 : 0 }}
+                transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+                {/* ── FRONT ── */}
+                <div
+                    inert={flipped}
+                    className="flip-face relative flex flex-col h-full rounded-2xl overflow-hidden bg-surface/50 backdrop-blur-sm border border-white/5 group-hover:border-primary/30 group-hover:shadow-xl group-hover:shadow-primary/10 transition-colors duration-300"
+                >
+                    {/* Motion-value glow — pointer-events-none so links beneath are always clickable */}
+                    <motion.div
+                        className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{ background }}
+                    />
 
-            {/* Per-project color identity — thin gradient accent at the top edge */}
-            <div className={`relative z-10 h-1 w-full shrink-0 bg-gradient-to-r ${project.color}`} aria-hidden="true" />
+                    {/* Per-project color identity — thin gradient accent at the top edge */}
+                    <div className={`relative z-10 h-1 w-full shrink-0 bg-gradient-to-r ${project.color}`} aria-hidden="true" />
 
-            {/* Screenshot preview */}
-            <div className="relative z-10 shrink-0">
-                <BrowserMockup project={project} />
-            </div>
+                    {/* Screenshot preview */}
+                    <div className="relative z-10 shrink-0">
+                        <BrowserMockup project={project} />
+                    </div>
 
-            {/* Content */}
-            <div className="relative z-10 p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold mb-2 text-text group-hover:text-primary transition-colors duration-300">
-                    {project.title}
-                </h3>
-                {project.metric && (
-                    <p className="flex items-center gap-2 mb-3 text-xs font-medium text-muted">
-                        <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.color}`} aria-hidden="true" />
-                        {project.metric}
-                    </p>
+                    {/* Content */}
+                    <div className="relative z-10 p-6 flex flex-col flex-grow">
+                        <h3 className="text-xl font-bold mb-2 text-text group-hover:text-primary transition-colors duration-300">
+                            {project.title}
+                        </h3>
+                        {project.metric && (
+                            <p className="flex items-center gap-2 mb-3 text-xs font-medium text-muted">
+                                <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${project.color}`} aria-hidden="true" />
+                                {project.metric}
+                            </p>
+                        )}
+                        <p className="text-muted mb-5 leading-relaxed text-sm">{project.description}</p>
+                        <div className="flex flex-wrap gap-2 mb-6">
+                            {project.tags.map((tag, i) => (
+                                <span key={i} className="px-3 py-1 text-xs font-medium bg-white/5 text-muted rounded-full border border-white/5">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                        <div className="flex items-center gap-4 mt-auto">
+                            {project.github && (
+                                <a
+                                    href={project.github}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
+                                    className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
+                                >
+                                    <Github size={16} aria-hidden="true" />
+                                    View Code
+                                </a>
+                            )}
+                            {project.live && (
+                                <a
+                                    href={project.live}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`Visit ${project.title} live website (opens in new tab)`}
+                                    className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
+                                >
+                                    <ExternalLink size={16} aria-hidden="true" />
+                                    Visit Website
+                                </a>
+                            )}
+                            {project.appStore && (
+                                <AppStoreAction project={project} onFlip={() => setFlipped(true)} />
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* ── BACK ── App Store QR (desktop flip target) ── */}
+                {project.appStore && (
+                    <div
+                        inert={!flipped}
+                        className="flip-face flip-rear flex flex-col items-center justify-center gap-3 h-full rounded-2xl overflow-hidden bg-surface border border-primary/30 p-6 text-center"
+                    >
+                        <div className="rounded-xl bg-white p-3 shadow-lg">
+                            <img
+                                src={project.qr}
+                                alt={`QR code to download ${project.title} on the App Store`}
+                                width={150}
+                                height={150}
+                                className="w-[150px] h-[150px]"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-text">Scan to download</p>
+                            <p className="text-xs text-muted mt-0.5">Point your phone camera at the code</p>
+                        </div>
+                        <a
+                            href={project.appStore}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${project.title} on the App Store (opens in new tab)`}
+                            className="flex items-center justify-center gap-2 w-full max-w-[210px] px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary/90 active:scale-95 transition-all"
+                        >
+                            <SiAppstore size={16} aria-hidden="true" />
+                            Open App Store
+                        </a>
+                        <button
+                            type="button"
+                            onClick={() => setFlipped(false)}
+                            className="flex items-center gap-1.5 text-xs font-medium text-muted hover:text-text transition-colors cursor-pointer"
+                        >
+                            <ArrowLeft size={14} aria-hidden="true" />
+                            Back
+                        </button>
+                    </div>
                 )}
-                <p className="text-muted mb-5 leading-relaxed text-sm">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tags.map((tag, i) => (
-                        <span key={i} className="px-3 py-1 text-xs font-medium bg-white/5 text-muted rounded-full border border-white/5">
-                            {tag}
-                        </span>
-                    ))}
-                </div>
-                <div className="flex items-center gap-4 mt-auto">
-                    {project.github && (
-                        <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
-                            className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
-                        >
-                            <Github size={16} aria-hidden="true" />
-                            View Code
-                        </a>
-                    )}
-                    {project.live && (
-                        <a
-                            href={project.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`Visit ${project.title} live website (opens in new tab)`}
-                            className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
-                        >
-                            <ExternalLink size={16} aria-hidden="true" />
-                            Visit Website
-                        </a>
-                    )}
-                </div>
-            </div>
+            </motion.div>
         </motion.div>
     );
 };
