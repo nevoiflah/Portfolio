@@ -83,8 +83,10 @@ const Hero = () => {
         },
     };
 
+    /* min-h-screen + pt-16 is for the stacked mobile layout; inside the desktop deck
+       ZSection already supplies a centred 100vh, so they would only overflow it */
     return (
-        <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+        <section id="hero" className="min-h-screen md:min-h-0 flex items-center justify-center relative overflow-hidden pt-16 md:pt-0">
             <div className="container mx-auto px-6 relative z-10 text-center">
                 <motion.div
                     variants={containerVariants}
@@ -125,7 +127,7 @@ const Hero = () => {
                     <motion.h1
                         aria-label="Nevo Iflah"
                         variants={charContainerVariants}
-                        className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary bg-[length:200%_auto] motion-safe:animate-gradient"
+                        className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-text via-primary to-text bg-[length:200%_auto] motion-safe:animate-gradient"
                     >
                         {"Nevo Iflah".split("").map((char, i) => (
                             <motion.span

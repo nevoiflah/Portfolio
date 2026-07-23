@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#09090b', // Zinc 950 (darker, richer)
-        surface: '#18181b',    // Zinc 900
-        primary: '#8b5cf6',    // Violet 500 (vibrant purple)
-        secondary: '#06b6d4',  // Cyan 500 (vibrant teal)
-        accent: '#f43f5e',     // Rose 500 (pop color)
-        text: '#f8fafc',       // Slate 50
-        muted: '#a1a1aa',      // Zinc 400
+        // "Signal" — neutral greyscale throughout, one electric blue carries every accent
+        background: '#0a0a0b', // near-black
+        surface:    '#16161a', // graphite
+        primary:    '#3b82f6', // Blue 500 — the only hue in the system
+        secondary:  '#64748b', // Slate 500 — a muted neutral, deliberately not a 2nd hue
+        accent:     '#60a5fa', // Blue 400 — lighter step of primary, for highlights
+        text:       '#f4f4f5', // Zinc 100
+        muted:      '#8b8b93', // neutral grey
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

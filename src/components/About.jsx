@@ -23,7 +23,7 @@ const About = () => {
     const tileClass = "glass-card p-6 flex flex-col justify-center transition-colors hover:border-primary/30";
 
     return (
-        <section id="about" className="py-20">
+        <section id="about" className="py-20 md:py-8">
             <div className="container mx-auto px-6">
                 <motion.div
                     variants={containerVariants}

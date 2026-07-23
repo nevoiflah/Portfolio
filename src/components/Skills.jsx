@@ -32,7 +32,7 @@ const skills = {
 const SkillCard = ({ category, items, variants }) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(139,92,246,0.10), transparent 40%)`;
+    const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(59,130,246,0.10), transparent 40%)`;
 
     const handleMouseMove = (e) => {
         const { left, top } = e.currentTarget.getBoundingClientRect();
@@ -97,7 +97,7 @@ const Skills = () => {
     };
 
     return (
-        <section id="skills" className="py-20">
+        <section id="skills" className="py-20 md:py-8">
             <div className="container mx-auto px-6">
                 <motion.div
                     variants={containerVariants}

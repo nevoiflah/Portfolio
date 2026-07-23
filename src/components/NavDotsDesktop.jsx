@@ -46,7 +46,7 @@ const NavDotsDesktop = () => {
                     </span>
                     <span className={`block rounded-full transition-all duration-300 ${
                         active === index
-                            ? 'w-3 h-3 bg-primary shadow-[0_0_8px_rgba(139,92,246,0.6)]'
+                            ? 'w-3 h-3 bg-primary shadow-[0_0_8px_rgba(59,130,246,0.6)]'
                             : 'w-2 h-2 bg-white/30 group-hover:bg-white/70'
                     }`} aria-hidden="true" />
                 </button>

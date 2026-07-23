@@ -24,7 +24,7 @@ const Contact = () => {
     const linkClass = "flex items-center justify-center gap-3 w-40 px-6 py-3 rounded-full font-medium transition-all active:scale-95 active:opacity-80";
 
     return (
-        <section id="contact" className="py-20 relative overflow-hidden">
+        <section id="contact" className="py-20 md:py-8 relative overflow-hidden">
             <div className="container mx-auto px-6 relative z-10">
                 <motion.div
                     variants={containerVariants}

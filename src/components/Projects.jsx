@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
     motion, AnimatePresence,
     useReducedMotion, useMotionValue, useMotionTemplate,
 } from 'framer-motion';
-import { Github, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Github, ExternalLink, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SiAppstore } from 'react-icons/si';
 import useIsMobile from '../hooks/useIsMobile';
 
@@ -41,8 +41,19 @@ const AppStoreAction = ({ project, onFlip }) => {
     );
 };
 
-/* ── Data ────────────────────────────────────────────────────────────── */
+/* ── Data ── F.O.R leads the reel on every breakpoint ────────────────── */
 const projects = [
+    {
+        title: "F.O.R Ring",
+        description: "Premium smart ring companion app with deep native SDK integration for real-time health monitoring. Features dual-phase Bluetooth sync, HRV & sleep analytics, and a glassmorphism UI.",
+        tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
+        live: "https://foring.co.il",
+        appStore: "https://apps.apple.com/il/app/f-o-r/id6760432299",
+        qr: "/qr/for-appstore.svg",
+        screenshot: "/screenshots/foring.png",
+        color: "from-blue-400 to-blue-600",
+        metric: "Dual-phase BLE health sync",
+    },
     {
         title: "Buddiz",
         description: "A P2P craft beer e-commerce platform featuring secure payments, real-time order tracking, and a dynamic product catalog. Built with a serverless architecture.",
@@ -50,17 +61,17 @@ const projects = [
         github: "https://github.com/nevoiflah/BuddizProject",
         live: "https://www.buddiz.link",
         screenshot: "/screenshots/buddiz.png",
-        color: "from-yellow-500 to-orange-500",
+        color: "from-slate-300 to-slate-500",
         metric: "Serverless · ~$0 idle cost",
     },
     {
-        title: "F.O.R Ring",
-        description: "Premium smart ring companion app with deep native SDK integration for real-time health monitoring. Features dual-phase Bluetooth sync, HRV & sleep analytics, and a glassmorphism UI.",
-        tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
-        live: "https://foring.co.il",
-        screenshot: "/screenshots/foring.png",
-        color: "from-blue-500 to-indigo-600",
-        metric: "Dual-phase BLE health sync",
+        title: "RINGA",
+        description: "Hyper-local social app for spontaneous, real-world connections. Proximity radar over a dynamic 75–200 m radius, delayed first messages, Ghost Mode privacy zones, and chats that expire after 24h.",
+        tags: ["React Native", "Expo", "TypeScript", "Express", "PostgreSQL", "WebSockets"],
+        live: "https://ringaapp.com",
+        screenshot: "/screenshots/ringa.png",
+        color: "from-blue-600 to-slate-400",
+        metric: "Realtime WebSocket · 200 m radar",
     },
     {
         title: "COUNT — Intimacy Journal",
@@ -107,7 +118,7 @@ const BrowserMockup = ({ project }) => {
 const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
-    const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(139,92,246,0.10), transparent 40%)`;
+    const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(59,130,246,0.10), transparent 40%)`;
     const [flipped, setFlipped] = useState(false);
 
     const handleMouseMove = (e) => {
@@ -318,6 +329,110 @@ const MobileCarousel = ({ projects, shouldReduceMotion }) => {
     );
 };
 
+/* ── Desktop carousel ─ sliding track, 3-up on lg / 2-up on md ───────── */
+const usePerView = () => {
+    const [perView, setPerView] = useState(3);
+
+    useEffect(() => {
+        const measure = () => setPerView(window.innerWidth >= 1024 ? 3 : 2);
+        measure();
+        window.addEventListener('resize', measure);
+        return () => window.removeEventListener('resize', measure);
+    }, []);
+
+    return perView;
+};
+
+const DesktopCarousel = ({ projects, shouldReduceMotion }) => {
+    const perView = usePerView();
+    const [page, setPage] = useState(0);
+
+    /* Slides advance one card at a time, so the last page is the last full window */
+    const maxPage = Math.max(0, projects.length - perView);
+    const clamped = Math.min(page, maxPage);
+    const goTo = (p) => setPage(Math.min(Math.max(p, 0), maxPage));
+
+    return (
+        <div
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Featured projects"
+            onKeyDown={(e) => {
+                if (e.key === 'ArrowRight') { e.preventDefault(); goTo(clamped + 1); }
+                if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(clamped - 1); }
+            }}
+        >
+            {/* py-4 keeps the card's hover lift + glow from being clipped by overflow-hidden */}
+            <div className="overflow-hidden py-4">
+                <motion.div
+                    className="flex -mx-4"
+                    animate={{ x: `-${clamped * (100 / perView)}%` }}
+                    transition={shouldReduceMotion
+                        ? { duration: 0 }
+                        : { type: 'spring', stiffness: 260, damping: 32 }}
+                >
+                    {projects.map((project, index) => {
+                        const visible = index >= clamped && index < clamped + perView;
+                        return (
+                            <div
+                                key={index}
+                                className="shrink-0 px-4"
+                                style={{ flexBasis: `${100 / perView}%` }}
+                                inert={!visible}
+                                aria-hidden={!visible}
+                            >
+                                <ProjectCard
+                                    project={project}
+                                    variants={{}}
+                                    shouldReduceMotion={shouldReduceMotion}
+                                />
+                            </div>
+                        );
+                    })}
+                </motion.div>
+            </div>
+
+            {/* Arrows + pagination dots */}
+            <div className="flex justify-center items-center gap-6 mt-5">
+                <button
+                    type="button"
+                    onClick={() => goTo(clamped - 1)}
+                    disabled={clamped === 0}
+                    aria-label="Previous projects"
+                    className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 text-muted hover:text-text hover:border-primary/40 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                >
+                    <ChevronLeft size={18} aria-hidden="true" />
+                </button>
+
+                <div className="flex items-center gap-2" role="tablist" aria-label="Project pages">
+                    {Array.from({ length: maxPage + 1 }, (_, i) => (
+                        <button
+                            key={i}
+                            role="tab"
+                            aria-selected={i === clamped}
+                            aria-label={`Show projects starting at ${projects[i].title}`}
+                            onClick={() => goTo(i)}
+                            className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                                i === clamped ? 'w-6 bg-primary' : 'w-1.5 bg-white/30 hover:bg-white/60'
+                            }`}
+                        />
+                    ))}
+                </div>
+
+                <button
+                    type="button"
+                    onClick={() => goTo(clamped + 1)}
+                    disabled={clamped === maxPage}
+                    aria-label="Next projects"
+                    className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 text-muted hover:text-text hover:border-primary/40 active:scale-95 disabled:opacity-30 disabled:pointer-events-none transition-all cursor-pointer"
+                >
+                    <ChevronRight size={18} aria-hidden="true" />
+                </button>
+            </div>
+        </div>
+    );
+};
+
 /* ── Projects section ────────────────────────────────────────────────── */
 const Projects = () => {
     const shouldReduceMotion = useReducedMotion();
@@ -339,8 +454,10 @@ const Projects = () => {
         visible:  { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } },
     };
 
+    /* Desktop sections are vertically centred in a fixed 100vh ZSection, so the
+       outer padding only needs to earn its keep on the mobile stack */
     return (
-        <section id="projects" className="py-20">
+        <section id="projects" className="py-20 md:py-8">
             <div className="container mx-auto px-6">
                 <motion.div
                     variants={containerVariants}
@@ -348,31 +465,22 @@ const Projects = () => {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.1 }}
                 >
-                    <motion.div variants={itemVariants} className="text-center mb-16">
+                    <motion.div variants={itemVariants} className="text-center mb-16 md:mb-8">
                         <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
                         <p className="text-muted max-w-2xl mx-auto">
                             A selection of my recent work in full-stack development and cloud solutions.
                         </p>
                     </motion.div>
 
-                    {isMobile ? (
-                        /* Mobile: swipeable single-card carousel */
-                        <motion.div variants={itemVariants}>
+                    <motion.div variants={itemVariants}>
+                        {isMobile ? (
+                            /* Mobile: swipeable single-card carousel */
                             <MobileCarousel projects={projects} shouldReduceMotion={shouldReduceMotion} />
-                        </motion.div>
-                    ) : (
-                        /* Desktop: 3-column grid */
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {projects.map((project, index) => (
-                                <ProjectCard
-                                    key={index}
-                                    project={project}
-                                    variants={itemVariants}
-                                    shouldReduceMotion={shouldReduceMotion}
-                                />
-                            ))}
-                        </div>
-                    )}
+                        ) : (
+                            /* Desktop: sliding multi-card carousel */
+                            <DesktopCarousel projects={projects} shouldReduceMotion={shouldReduceMotion} />
+                        )}
+                    </motion.div>
                 </motion.div>
             </div>
         </section>

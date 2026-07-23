@@ -62,12 +62,13 @@ const GeometricNetwork = ({ count = 400 }) => {
     const nodeMaterial = useRef();
     const lineMaterial = useRef();
 
-    // Define theme colors
+    // Neutral field — the background stays greyscale so the blue accent reads
+    // only in the UI, and text sits on a calm backdrop rather than a lit one
     const colors = useMemo(() => [
-        new THREE.Color('#8b5cf6'), // Violet
-        new THREE.Color('#06b6d4'), // Cyan
-        new THREE.Color('#f43f5e'), // Rose
-        new THREE.Color('#8b5cf6'), // Violet
+        new THREE.Color('#a1a1aa'), // Zinc 400
+        new THREE.Color('#71717a'), // Zinc 500
+        new THREE.Color('#52525b'), // Zinc 600
+        new THREE.Color('#8b8b93'), // muted grey
     ], []);
 
     useFrame((state) => {
@@ -144,15 +145,15 @@ const GeometricNetwork = ({ count = 400 }) => {
     return (
         <>
             {/* Fog for Depth Fade */}
-            <fog attach="fog" args={['#09090b', 5, 45]} />
+            <fog attach="fog" args={['#0a0a0b', 5, 45]} />
 
             {/* MAIN NODES */}
             <instancedMesh ref={mesh} args={[null, null, count]}>
                 <sphereGeometry args={[0.06, 16, 16]} />
                 <meshStandardMaterial
                     ref={nodeMaterial}
-                    color="#8b5cf6"
-                    emissive="#8b5cf6"
+                    color="#71717a"
+                    emissive="#71717a"
                     emissiveIntensity={0.8}
                     roughness={0.1}
                     metalness={0.8}
@@ -163,7 +164,7 @@ const GeometricNetwork = ({ count = 400 }) => {
             <lineSegments ref={linesGeometry} geometry={linesLines}>
                 <lineBasicMaterial
                     ref={lineMaterial}
-                    color="#8b5cf6"
+                    color="#71717a"
                     transparent
                     opacity={0.1}
                 />
