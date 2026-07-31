@@ -84,6 +84,16 @@ const projects = [
         color: "from-zinc-400 to-zinc-600",
         metric: "Privacy-first · on-device",
     },
+    {
+        title: "Ruppin Academic Advisor",
+        description: "Final-year academic project: a voice-driven AI advisor wrapper with RAG-based memory, hybrid C#/Python backend, and an admin analytics dashboard.",
+        tags: ["React", "C# / ASP.NET Core", "Python/Flask", "MongoDB Atlas", "OpenAI Whisper & TTS"],
+        github: "https://github.com/nevoiflah/FinalProjectRina",
+        live: "https://www.ruppinacademicadvisor.net",
+        screenshot: "/screenshots/rina.png",
+        color: "from-emerald-400 to-blue-600",
+        metric: "RAG-powered AI memory",
+    },
 ];
 
 /* ── Browser mockup ──────────────────────────────────────────────────── */
