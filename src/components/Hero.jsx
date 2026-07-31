@@ -142,7 +142,7 @@ const Hero = () => {
 
                     {/* Subtitle */}
                     <motion.p variants={itemVariants} className="text-xl md:text-2xl text-muted mb-6 max-w-2xl mx-auto">
-                        Computer Science Student & Full Stack Developer
+                        B.Sc Computer Science · Full Stack Developer
                     </motion.p>
 
                     {/* Credibility stats with CountUp */}
