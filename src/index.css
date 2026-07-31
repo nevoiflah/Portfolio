@@ -24,7 +24,7 @@
 
 /* 3D flip card — front/back stacked in one grid cell so height tracks the tallest face */
 .flip-3d { perspective: 1200px; }
-.flip-inner { display: grid; transform-style: preserve-3d; }
+.flip-inner { display: grid; grid-template-columns: minmax(0, 1fr); transform-style: preserve-3d; }
 .flip-inner > .flip-face { grid-area: 1 / 1; }
 .flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .flip-rear { transform: rotateY(180deg); }
