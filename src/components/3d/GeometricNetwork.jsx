@@ -62,7 +62,7 @@ const GeometricNetwork = ({ count = 400 }) => {
     const nodeMaterial = useRef();
     const lineMaterial = useRef();
 
-    // Neutral field — the background stays greyscale so the blue accent reads
+    // Neutral field - the background stays greyscale so the blue accent reads
     // only in the UI, and text sits on a calm backdrop rather than a lit one
     const colors = useMemo(() => [
         new THREE.Color('#a1a1aa'), // Zinc 400

@@ -9,7 +9,7 @@ const certifications = [
         date: 'Nov 1, 2025',
     },
     {
-        title: 'AWS Academy Graduate — Cloud Developing',
+        title: 'AWS Academy Graduate - Cloud Developing',
         issuer: 'AWS Academy · 40 hours',
         date: 'Nov 25, 2025',
         credlyUrl: 'https://www.credly.com/go/CJXkVYB5',
@@ -48,7 +48,7 @@ const About = () => {
                     viewport={{ once: true, amount: 0.2 }}
                     className="grid grid-cols-2 md:grid-cols-4 auto-rows-auto md:auto-rows-fr gap-3 max-w-5xl mx-auto"
                 >
-                    {/* Bio — large anchor tile */}
+                    {/* Bio - large anchor tile */}
                     <motion.div
                         variants={itemVariants}
                         className={`${tileClass} col-span-2 md:col-span-2 md:row-span-2 !items-start text-left gap-4`}
@@ -78,7 +78,7 @@ const About = () => {
                         <span className="text-xs text-muted">Projects Built</span>
                     </motion.div>
 
-                    {/* AWS — wide accent tile, flips to reveal both certifications */}
+                    {/* AWS - wide accent tile, flips to reveal both certifications */}
                     <motion.div
                         variants={itemVariants}
                         className="relative col-span-2 md:col-span-2 flip-3d"
@@ -105,7 +105,7 @@ const About = () => {
                                 </div>
                             </button>
 
-                            {/* BACK — certification list */}
+                            {/* BACK - certification list */}
                             <div
                                 inert={!awsFlipped}
                                 className="flip-face flip-rear h-full glass-card border-primary/30 p-5 flex flex-col justify-center gap-3"
@@ -143,7 +143,7 @@ const About = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* CS student — wide */}
+                    {/* CS student - wide */}
                     <motion.div variants={itemVariants} className={`${tileClass} col-span-2 md:col-span-2 !flex-row !justify-start items-center gap-4`}>
                         <GraduationCap size={28} className="shrink-0 text-primary" aria-hidden="true" />
                         <div className="text-left">
@@ -152,7 +152,7 @@ const About = () => {
                         </div>
                     </motion.div>
 
-                    {/* Focus areas — wide */}
+                    {/* Focus areas - wide */}
                     <motion.div variants={itemVariants} className={`${tileClass} col-span-2 md:col-span-2 !flex-row !justify-start items-center gap-4`}>
                         <Sparkles size={28} className="shrink-0 text-primary" aria-hidden="true" />
                         <div className="text-left">

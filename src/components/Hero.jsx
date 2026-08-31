@@ -44,7 +44,7 @@ const stats = [
 const Hero = () => {
     const shouldReduceMotion = useReducedMotion();
 
-    /* Container stagger — drives everything via variants */
+    /* Container stagger - drives everything via variants */
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -62,7 +62,7 @@ const Hero = () => {
         visible:  { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } },
     };
 
-    /* h1 character container — nested stagger */
+    /* h1 character container - nested stagger */
     const charContainerVariants = {
         hidden:  {},
         visible: {
@@ -123,7 +123,7 @@ const Hero = () => {
                         Hello, I'm
                     </motion.p>
 
-                    {/* Name — character-by-character */}
+                    {/* Name - character-by-character */}
                     <motion.h1
                         aria-label="Nevo Iflah"
                         variants={charContainerVariants}

@@ -11,7 +11,7 @@ import useIsMobile from '../hooks/useIsMobile';
 const AppStoreAction = ({ project, onFlip }) => {
     const isMobile = useIsMobile();
 
-    /* Mobile — already on the device, deep-link straight to the store */
+    /* Mobile - already on the device, deep-link straight to the store */
     if (isMobile) {
         return (
             <a
@@ -27,7 +27,7 @@ const AppStoreAction = ({ project, onFlip }) => {
         );
     }
 
-    /* Desktop — flip the card to reveal a scannable QR */
+    /* Desktop - flip the card to reveal a scannable QR */
     return (
         <button
             type="button"
@@ -69,12 +69,14 @@ const projects = [
         description: "Hyper-local social app for spontaneous, real-world connections. Proximity radar over a dynamic 75–200 m radius, delayed first messages, Ghost Mode privacy zones, and chats that expire after 24h.",
         tags: ["React Native", "Expo", "TypeScript", "Express", "PostgreSQL", "WebSockets"],
         live: "https://ringaapp.com",
+        appStore: "https://apps.apple.com/il/app/ringa-app/id6757655133",
+        qr: "/qr/ringa-appstore.svg",
         screenshot: "/screenshots/ringa.png",
         color: "from-blue-600 to-slate-400",
         metric: "Realtime WebSocket · 200 m radar",
     },
     {
-        title: "COUNT — Intimacy Journal",
+        title: "COUNT - Intimacy Journal",
         description: "A premium, privacy-first mobile tracking app and marketing site. Features secure authentication, proprietary analytics algorithms, and interactive SVG visualizations.",
         tags: ["React Native", "Next.js", "Firebase", "TypeScript", "Framer Motion"],
         live: "https://countintimacyjournal.com",
@@ -155,13 +157,13 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                     inert={flipped}
                     className="flip-face relative flex flex-col h-full rounded-2xl overflow-hidden bg-surface/50 backdrop-blur-sm border border-white/5 group-hover:border-primary/30 group-hover:shadow-xl group-hover:shadow-primary/10 transition-colors duration-300"
                 >
-                    {/* Motion-value glow — pointer-events-none so links beneath are always clickable */}
+                    {/* Motion-value glow - pointer-events-none so links beneath are always clickable */}
                     <motion.div
                         className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                         style={{ background }}
                     />
 
-                    {/* Per-project color identity — thin gradient accent at the top edge */}
+                    {/* Per-project color identity - thin gradient accent at the top edge */}
                     <div className={`relative z-10 h-1 w-full shrink-0 bg-gradient-to-r ${project.color}`} aria-hidden="true" />
 
                     {/* Screenshot preview */}

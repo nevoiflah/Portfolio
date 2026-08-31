@@ -79,7 +79,7 @@ function App() {
     <div className="min-h-screen text-text selection:bg-primary/30 relative">
       <a href="#hero" className="skip-link">Skip to content</a>
 
-      {/* 3D Background — fades in on mount */}
+      {/* 3D Background - fades in on mount */}
       <CanvasErrorBoundary>
         <motion.div
           className="fixed top-0 left-0 w-full h-full -z-10 bg-background"
@@ -95,10 +95,10 @@ function App() {
         </motion.div>
       </CanvasErrorBoundary>
 
-      {/* Navigation — always rendered, CSS controls visibility */}
+      {/* Navigation - always rendered, CSS controls visibility */}
       <NavDotsDesktop />
 
-      {/* Layout — AnimatePresence crossfades between mobile and desktop */}
+      {/* Layout - AnimatePresence crossfades between mobile and desktop */}
       <AnimatePresence mode="wait">
         {isMobile ? (
           <motion.div

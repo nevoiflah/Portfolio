@@ -19,7 +19,7 @@ const milestones = [
     {
         icon: Rocket,
         period: 'First builds',
-        title: 'Buddiz — Serverless E-commerce',
+        title: 'Buddiz - Serverless E-commerce',
         desc: 'A P2P platform on AWS Lambda + DynamoDB.',
     },
     {
@@ -122,7 +122,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
         return () => ro.disconnect();
     }, [isScrub]);
 
-    // ZSection holds full opacity over local ~[0, 0.7], then fades out — finish the
+    // ZSection holds full opacity over local ~[0, 0.7], then fades out - finish the
     // scrub within that window so the last milestone lands while still fully visible.
     const y = useTransform(local, [0, 0.7], [0, -shift]);
     const lineScaleY = useTransform(local, [0, 0.66], [0.04, 1]);
@@ -145,7 +145,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
     const Heading = (
         <div className="text-center mb-6 md:mb-8">
             <h2 className="text-2xl md:text-4xl font-bold mb-2 md:mb-3">My Journey</h2>
-            <p className="text-sm md:text-base text-muted">From command to code — the path that shaped how I build.</p>
+            <p className="text-sm md:text-base text-muted">From command to code - the path that shaped how I build.</p>
         </div>
     );
 
@@ -164,7 +164,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
                                     className="w-full h-full origin-top bg-gradient-to-b from-primary to-secondary"
                                 />
                             </div>
-                            {/* Moving track — lead-in / lead-out padding (> fade height)
+                            {/* Moving track - lead-in / lead-out padding (> fade height)
                                 so the first and last milestones rest fully clear at the extremes */}
                             <motion.div ref={trackRef} style={{ y }} className="pt-16 pb-16">
                                 {milestones.map((item, i) => (

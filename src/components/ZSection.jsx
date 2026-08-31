@@ -21,7 +21,7 @@ const ZSection = ({ children, index, total }) => {
         if (!el) return;
 
         const measure = () => {
-            /* display:none while out of range — scrollHeight is 0 and tells us nothing */
+            /* display:none while out of range - scrollHeight is 0 and tells us nothing */
             const needed = el.scrollHeight;
             if (!needed) return;
             const available = window.innerHeight - GUTTER;
@@ -51,7 +51,7 @@ const ZSection = ({ children, index, total }) => {
     );
 
     /* Hold at natural size for the whole time the section is readable, then zoom out
-       only over the last 30% — which is exactly when the opacity fade runs. Ramping
+       only over the last 30% - which is exactly when the opacity fade runs. Ramping
        1 -> 1.15 across the full range meant content was oversized while being read. */
     const scaleTransform = useTransform(
         scrollYProgress,
