@@ -22,6 +22,32 @@
   @apply bg-white/5 backdrop-blur-lg border border-white/10 rounded-xl shadow-xl;
 }
 
+.project-visual {
+  background: radial-gradient(circle at 50% 72%, color-mix(in srgb, var(--project-accent) 18%, transparent), transparent 42%), linear-gradient(145deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.008));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.project-visual::after {
+  content: '';
+  position: absolute;
+  inset: auto 18% -20px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--project-accent);
+  opacity: 0.08;
+  filter: blur(24px);
+  transition: opacity 400ms ease;
+}
+
+.group:hover .project-visual::after { opacity: 0.15; }
+
+.project-visual-grid {
+  opacity: 0.2;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, transparent, black 35%, transparent 95%);
+}
+
 /* 3D flip card - front/back stacked in one grid cell so height tracks the tallest face */
 .flip-3d { perspective: 1200px; }
 .flip-inner { display: grid; grid-template-columns: minmax(0, 1fr); transform-style: preserve-3d; }

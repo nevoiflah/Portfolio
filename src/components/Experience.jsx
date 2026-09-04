@@ -25,8 +25,8 @@ const milestones = [
     {
         icon: Smartphone,
         period: 'Client work',
-        title: 'F.O.R Ring & RINGA',
-        desc: 'React Native apps with native SDK and realtime backends.',
+        title: 'NIVORA & RINGA',
+        desc: 'React Native apps with native SDK bridges and realtime backends.',
     },
     {
         icon: Sparkles,

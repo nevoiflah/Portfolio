@@ -41,18 +41,20 @@ const AppStoreAction = ({ project, onFlip }) => {
     );
 };
 
-/* ── Data ── F.O.R leads the reel on every breakpoint ────────────────── */
+/* ── Data ── NIVORA leads the reel on every breakpoint ────────────────── */
 const projects = [
     {
-        title: "F.O.R Ring",
-        description: "Premium smart ring companion app with deep native SDK integration for real-time health monitoring. Features dual-phase Bluetooth sync, HRV & sleep analytics, and a glassmorphism UI.",
+        title: "NIVORA",
+        description: "Independent smart ring companion app with a native SDK bridge, responsive dual-phase Bluetooth sync, wellness trends, personal baselines, and exportable health summaries in a polished glassmorphism interface.",
         tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
-        live: "https://foring.co.il",
+        live: "https://www.nivoraring.com",
         appStore: "https://apps.apple.com/il/app/f-o-r/id6760432299",
         qr: "/qr/for-appstore.svg",
-        screenshot: "/screenshots/foring.png",
+        visual: "wellness",
+        category: "MOBILE · WELLNESS",
+        accent: "#60a5fa",
         color: "from-blue-400 to-blue-600",
-        metric: "Dual-phase BLE health sync",
+        metric: "Dual-phase BLE sync · wellness insights",
     },
     {
         title: "Buddiz",
@@ -60,7 +62,9 @@ const projects = [
         tags: ["React", "AWS Lambda", "DynamoDB", "Cognito"],
         github: "https://github.com/nevoiflah/BuddizProject",
         live: "https://www.buddiz.link",
-        screenshot: "/screenshots/buddiz.png",
+        visual: "commerce",
+        category: "WEB · E-COMMERCE",
+        accent: "#d6a85f",
         color: "from-slate-300 to-slate-500",
         metric: "Serverless · ~$0 idle cost",
     },
@@ -71,7 +75,9 @@ const projects = [
         live: "https://ringaapp.com",
         appStore: "https://apps.apple.com/il/app/ringa-app/id6757655133",
         qr: "/qr/ringa-appstore.svg",
-        screenshot: "/screenshots/ringa.png",
+        visual: "radar",
+        category: "MOBILE · SOCIAL",
+        accent: "#3b82f6",
         color: "from-blue-600 to-slate-400",
         metric: "Realtime WebSocket · 200 m radar",
     },
@@ -82,7 +88,9 @@ const projects = [
         live: "https://countintimacyjournal.com",
         appStore: "https://apps.apple.com/app/id6759260989",
         qr: "/qr/count-appstore.svg",
-        screenshot: "/screenshots/count.png",
+        visual: "journal",
+        category: "MOBILE · PRIVACY",
+        accent: "#c4a7b7",
         color: "from-zinc-400 to-zinc-600",
         metric: "Privacy-first · on-device",
     },
@@ -92,36 +100,33 @@ const projects = [
         tags: ["React", "C# / ASP.NET Core", "Python/Flask", "MongoDB Atlas", "OpenAI Whisper & TTS"],
         github: "https://github.com/nevoiflah/FinalProjectRina",
         live: "https://www.ruppinacademicadvisor.net",
-        screenshot: "/screenshots/rina.png",
+        visual: "advisor",
+        category: "WEB · APPLIED AI",
+        accent: "#34d399",
         color: "from-emerald-400 to-blue-600",
         metric: "RAG-powered AI memory",
     },
 ];
 
 /* ── Browser mockup ──────────────────────────────────────────────────── */
-const BrowserMockup = ({ project }) => {
-    const url = (project.live || project.github || '').replace('https://', '');
+const ProjectVisual = ({ project }) => {
+    const line = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' };
+    const artwork = {
+        wellness: <><g transform="rotate(-18 54 69)"><ellipse cx="54" cy="69" rx="27" ry="18" {...line} strokeWidth="7" /><ellipse cx="54" cy="69" rx="18" ry="10" {...line} opacity=".55" /><path d="M31 60c5-9 14-14 25-14 10 0 18 3 23 9" {...line} stroke={project.accent} strokeWidth="2.5" /><circle cx="43" cy="76" r="2" fill={project.accent} /><circle cx="54" cy="79" r="2" fill={project.accent} /><circle cx="65" cy="76" r="2" fill={project.accent} /></g><rect x="112" y="22" width="48" height="94" rx="10" {...line} /><circle cx="136" cy="53" r="13" {...line} /><path d="M123 53a13 13 0 0 1 20-11" {...line} stroke={project.accent} strokeWidth="3" /><path d="M121 78h30M121 87l7-4 7 3 8-8 8 3M121 99h18" {...line} /></>,
+        commerce: <><path d="M54 40h74l-7 54H61zM70 40c0-15 9-23 21-23s21 8 21 23" {...line} /><path d="M72 61h43M68 75h20M96 75h19" {...line} opacity=".55" /><circle cx="69" cy="106" r="5" fill={project.accent} /><circle cx="116" cy="106" r="5" fill={project.accent} /><path d="M143 47v43M135 56l8-9 8 9M135 81l8 9 8-9" {...line} opacity=".65" /></>,
+        radar: <><circle cx="90" cy="69" r="47" {...line} opacity=".3" /><circle cx="90" cy="69" r="31" {...line} opacity=".55" /><circle cx="90" cy="69" r="15" {...line} /><path d="M90 69l33-31" {...line} stroke={project.accent} strokeWidth="2" /><circle cx="90" cy="69" r="4" fill={project.accent} /><circle cx="114" cy="54" r="3" fill="currentColor" /><circle cx="66" cy="87" r="3" fill="currentColor" /><circle cx="124" cy="91" r="3" fill="currentColor" /></>,
+        journal: <><rect x="51" y="20" width="78" height="98" rx="8" {...line} /><path d="M68 20v98M80 46h32M80 58h25M80 88c8-14 15 10 24-5 5-9 9-8 13-4" {...line} /><rect x="99" y="94" width="29" height="23" rx="6" fill="#101216" stroke="currentColor" strokeWidth="1.5" /><path d="M106 94v-5a7.5 7.5 0 0 1 15 0v5" {...line} stroke={project.accent} /></>,
+        advisor: <><rect x="31" y="29" width="118" height="76" rx="6" {...line} /><path d="M20 113h140M48 48h33M48 58h46M48 68h27" {...line} opacity=".55" /><circle cx="119" cy="63" r="4" fill={project.accent} /><circle cx="104" cy="82" r="3" fill="currentColor" /><circle cx="133" cy="87" r="3" fill="currentColor" /><path d="M81 92l23-10 15-19 14 24M42 87v-5m7 10V77m7 12V72m7 14V78m7 7v-3" {...line} /></>,
+    };
+
     return (
-        <div className="relative h-44 overflow-hidden bg-black">
-            {project.screenshot && (
-                <img
-                    src={project.screenshot}
-                    alt={`${project.title} website preview`}
-                    width={1280}
-                    height={720}
-                    className="absolute inset-0 w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                />
-            )}
-            <div className="relative z-10 flex items-center gap-1.5 px-4 h-8 bg-black/60 border-b border-white/10 backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-red-400/70"    aria-hidden="true" />
-                <span className="w-2 h-2 rounded-full bg-yellow-400/70" aria-hidden="true" />
-                <span className="w-2 h-2 rounded-full bg-green-400/70"  aria-hidden="true" />
-                {url && (
-                    <span className="flex-1 mx-2 px-3 h-4 bg-white/10 rounded text-[9px] text-white/50 leading-4 truncate">
-                        {url}
-                    </span>
-                )}
-            </div>
+        <div className="project-visual relative h-44 overflow-hidden" style={{ '--project-accent': project.accent }}>
+            <div className="project-visual-grid absolute inset-0" aria-hidden="true" />
+            <div className="absolute left-5 top-4 text-[10px] font-semibold tracking-[0.2em] text-white/45">{project.category}</div>
+            <div className="absolute right-5 top-4 flex items-center gap-2 text-[9px] tracking-[0.16em] text-white/30" aria-hidden="true"><span className="h-px w-7 bg-white/20" />0{projects.indexOf(project) + 1}</div>
+            <svg viewBox="0 0 180 138" className="absolute inset-x-0 bottom-0 mx-auto h-[138px] w-[180px] text-white/75 transition-all duration-500 group-hover:text-white" role="img" aria-label={`${project.title} product silhouette`}>
+                {artwork[project.visual]}
+            </svg>
         </div>
     );
 };
@@ -168,7 +173,7 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
 
                     {/* Screenshot preview */}
                     <div className="relative z-10 shrink-0">
-                        <BrowserMockup project={project} />
+                        <ProjectVisual project={project} />
                     </div>
 
                     {/* Content */}
