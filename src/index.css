@@ -48,6 +48,26 @@
   mask-image: linear-gradient(to bottom, transparent, black 35%, transparent 95%);
 }
 
+.journey-card {
+  background: linear-gradient(110deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012) 72%);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+  border-right: 1px solid rgba(255, 255, 255, 0.025);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.025);
+  border-radius: 0 14px 14px 0;
+}
+
+.journey-card:hover {
+  background: linear-gradient(110deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.018) 72%);
+}
+
+.journey-scroll {
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+}
+
+.journey-scroll::-webkit-scrollbar { display: none; }
+
 /* 3D flip card - front/back stacked in one grid cell so height tracks the tallest face */
 .flip-3d { perspective: 1200px; }
 .flip-inner { display: grid; grid-template-columns: minmax(0, 1fr); transform-style: preserve-3d; }
