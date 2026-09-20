@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Code2, Layers, Cloud, GraduationCap, Sparkles, ArrowLeft, ExternalLink, Award } from 'lucide-react';
+import { Code2, Layers, Cloud, GraduationCap, Sparkles, ArrowLeft, ExternalLink, Award, RotateCw } from 'lucide-react';
 
 const certifications = [
     {
@@ -16,9 +16,18 @@ const certifications = [
     },
 ];
 
+/* Corner cue marking a tile as clickable */
+const FlipHint = () => (
+    <span className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-muted transition-colors group-hover:text-primary">
+        <RotateCw size={11} aria-hidden="true" />
+        Details
+    </span>
+);
+
 const About = () => {
     const shouldReduceMotion = useReducedMotion();
     const [awsFlipped, setAwsFlipped] = useState(false);
+    const [eduFlipped, setEduFlipped] = useState(false);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -95,9 +104,10 @@ const About = () => {
                                 inert={awsFlipped}
                                 onClick={() => setAwsFlipped(true)}
                                 aria-label="Show AWS certification details"
-                                className="flip-face relative w-full h-full overflow-hidden glass-card p-6 flex items-center gap-4 text-left transition-colors hover:border-primary/30 cursor-pointer"
+                                className="group flip-face relative w-full h-full overflow-hidden glass-card p-6 flex items-center gap-4 text-left transition-colors hover:border-primary/30 cursor-pointer"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 pointer-events-none" aria-hidden="true" />
+                                <FlipHint />
                                 <Cloud size={28} className="relative shrink-0 text-secondary" aria-hidden="true" />
                                 <div className="relative">
                                     <p className="text-lg font-bold text-text leading-tight">AWS Academy Graduate</p>
@@ -143,13 +153,55 @@ const About = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* CS student - wide */}
-                    <motion.div variants={itemVariants} className={`${tileClass} col-span-2 md:col-span-2 !flex-row !justify-start items-center gap-4`}>
-                        <GraduationCap size={28} className="shrink-0 text-primary" aria-hidden="true" />
-                        <div className="text-left">
-                            <p className="text-lg font-bold text-text leading-tight">B.Sc Computer Science</p>
-                            <p className="text-xs text-muted mt-0.5">Completed coursework</p>
-                        </div>
+                    {/* CS student - wide, flips to reveal institution and GPA */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="relative col-span-2 md:col-span-2 flip-3d"
+                    >
+                        <motion.div
+                            className="flip-inner h-full"
+                            style={{ transformStyle: 'preserve-3d' }}
+                            animate={{ rotateY: eduFlipped ? 180 : 0 }}
+                            transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            {/* FRONT */}
+                            <button
+                                type="button"
+                                inert={eduFlipped}
+                                onClick={() => setEduFlipped(true)}
+                                aria-label="Show degree details"
+                                className="group flip-face relative w-full h-full overflow-hidden glass-card p-6 flex items-center gap-4 text-left transition-colors hover:border-primary/30 cursor-pointer"
+                            >
+                                <FlipHint />
+                                <GraduationCap size={28} className="shrink-0 text-primary" aria-hidden="true" />
+                                <div>
+                                    <p className="text-lg font-bold text-text leading-tight">B.Sc Computer Science</p>
+                                    <p className="text-xs text-muted mt-0.5">Tap for details</p>
+                                </div>
+                            </button>
+
+                            {/* BACK - institution and GPA */}
+                            <div
+                                inert={!eduFlipped}
+                                className="flip-face flip-rear h-full glass-card border-primary/30 p-5 flex flex-col justify-center gap-3"
+                            >
+                                <div className="flex items-start gap-3">
+                                    <Award size={18} className="shrink-0 mt-0.5 text-primary" aria-hidden="true" />
+                                    <div className="text-left min-w-0">
+                                        <p className="text-sm font-semibold text-text leading-tight">Ruppin Academic Center</p>
+                                        <p className="text-xs text-muted mt-0.5">GPA 80</p>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => setEduFlipped(false)}
+                                    className="self-start flex items-center gap-1.5 text-xs font-medium text-muted hover:text-text transition-colors cursor-pointer"
+                                >
+                                    <ArrowLeft size={14} aria-hidden="true" />
+                                    Back
+                                </button>
+                            </div>
+                        </motion.div>
                     </motion.div>
 
                     {/* Focus areas - wide */}
