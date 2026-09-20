@@ -90,7 +90,7 @@ const About = () => {
                     {/* AWS - wide accent tile, flips to reveal both certifications */}
                     <motion.div
                         variants={itemVariants}
-                        className="relative col-span-2 md:col-span-2 flip-3d"
+                        className="relative col-span-2 md:col-span-2 flip-3d about-flip"
                     >
                         <motion.div
                             className="flip-inner h-full"
@@ -156,7 +156,7 @@ const About = () => {
                     {/* CS student - wide, flips to reveal institution and GPA */}
                     <motion.div
                         variants={itemVariants}
-                        className="relative col-span-2 md:col-span-2 flip-3d"
+                        className="relative col-span-2 md:col-span-2 flip-3d about-flip"
                     >
                         <motion.div
                             className="flip-inner h-full"

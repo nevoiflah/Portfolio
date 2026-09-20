@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import MagneticWrapper from './MagneticWrapper';
 
-/* ── CountUp ─────────────────────────────────────────────────────────── */
+/* -- CountUp ----------------------------------------------------------- */
 const CountUp = ({ target, suffix = '' }) => {
     const shouldReduceMotion = useReducedMotion();
     // Lazy init avoids a synchronous setState in the effect for reduced-motion users
@@ -33,14 +33,14 @@ const CountUp = ({ target, suffix = '' }) => {
     return <span>{count}{suffix}</span>;
 };
 
-/* ── Data ────────────────────────────────────────────────────────────── */
+/* -- Data -------------------------------------------------------------- */
 const stats = [
     { isCount: true,  target: 3, suffix: '+', label: 'Years Coding' },
     { isCount: true,  target: 5, suffix: '+', label: 'Projects Built' },
     { isCount: false, display: 'AWS',          label: 'Certified' },
 ];
 
-/* ── Hero ────────────────────────────────────────────────────────────── */
+/* -- Hero -------------------------------------------------------------- */
 const Hero = () => {
     const shouldReduceMotion = useReducedMotion();
 

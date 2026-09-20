@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
     motion, AnimatePresence,
     useReducedMotion, useMotionValue, useMotionTemplate,
@@ -6,8 +6,9 @@ import {
 import { Github, ExternalLink, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SiAppstore } from 'react-icons/si';
 import useIsMobile from '../hooks/useIsMobile';
+import { projects, FOCUS_PROJECT_EVENT } from '../data/projects';
 
-/* ── App Store action ── mobile: direct link · desktop: flip to QR ────── */
+/* -- App Store action -- mobile: direct link · desktop: flip to QR ------ */
 const AppStoreAction = ({ project, onFlip }) => {
     const isMobile = useIsMobile();
 
@@ -41,74 +42,8 @@ const AppStoreAction = ({ project, onFlip }) => {
     );
 };
 
-/* ── Data ── NIVORA leads the reel on every breakpoint ────────────────── */
-const projects = [
-    {
-        title: "NIVORA",
-        description: "Independent smart ring companion app with a native SDK bridge, responsive dual-phase Bluetooth sync, wellness trends, personal baselines, and exportable health summaries in a polished glassmorphism interface.",
-        tags: ["React Native", "Expo", "Swift/Kotlin", "MongoDB Atlas", "Firebase"],
-        live: "https://www.nivoraring.com",
-        appStore: "https://apps.apple.com/il/app/f-o-r/id6760432299",
-        qr: "/qr/for-appstore.svg",
-        visual: "wellness",
-        category: "MOBILE · WELLNESS",
-        accent: "#60a5fa",
-        color: "from-blue-400 to-blue-600",
-        metric: "Dual-phase BLE sync · wellness insights",
-    },
-    {
-        title: "Buddiz",
-        description: "A P2P craft beer e-commerce platform featuring secure payments, real-time order tracking, and a dynamic product catalog. Built with a serverless architecture.",
-        tags: ["React", "AWS Lambda", "DynamoDB", "Cognito"],
-        github: "https://github.com/nevoiflah/BuddizProject",
-        live: "https://www.buddiz.link",
-        visual: "commerce",
-        category: "WEB · E-COMMERCE",
-        accent: "#d6a85f",
-        color: "from-slate-300 to-slate-500",
-        metric: "Serverless · ~$0 idle cost",
-    },
-    {
-        title: "RINGA",
-        description: "Hyper-local social app for spontaneous, real-world connections. Proximity radar over a dynamic 75–200 m radius, delayed first messages, Ghost Mode privacy zones, and chats that expire after 24h.",
-        tags: ["React Native", "Expo", "TypeScript", "Express", "PostgreSQL", "WebSockets"],
-        live: "https://ringaapp.com",
-        appStore: "https://apps.apple.com/il/app/ringa-app/id6757655133",
-        qr: "/qr/ringa-appstore.svg",
-        visual: "radar",
-        category: "MOBILE · SOCIAL",
-        accent: "#3b82f6",
-        color: "from-blue-600 to-slate-400",
-        metric: "Realtime WebSocket · 200 m radar",
-    },
-    {
-        title: "COUNT - Intimacy Journal",
-        description: "A premium, privacy-first mobile tracking app and marketing site. Features secure authentication, proprietary analytics algorithms, and interactive SVG visualizations.",
-        tags: ["React Native", "Next.js", "Firebase", "TypeScript", "Framer Motion"],
-        live: "https://countintimacyjournal.com",
-        appStore: "https://apps.apple.com/app/id6759260989",
-        qr: "/qr/count-appstore.svg",
-        visual: "journal",
-        category: "MOBILE · PRIVACY",
-        accent: "#c4a7b7",
-        color: "from-zinc-400 to-zinc-600",
-        metric: "Privacy-first · on-device",
-    },
-    {
-        title: "Ruppin Academic Advisor",
-        description: "Final-year academic project: a voice-driven AI advisor wrapper with RAG-based memory, hybrid C#/Python backend, and an admin analytics dashboard.",
-        tags: ["React", "C# / ASP.NET Core", "Python/Flask", "MongoDB Atlas", "OpenAI Whisper & TTS"],
-        github: "https://github.com/nevoiflah/FinalProjectRina",
-        live: "https://www.ruppinacademicadvisor.net",
-        visual: "advisor",
-        category: "WEB · APPLIED AI",
-        accent: "#34d399",
-        color: "from-emerald-400 to-blue-600",
-        metric: "RAG-powered AI memory",
-    },
-];
 
-/* ── Browser mockup ──────────────────────────────────────────────────── */
+/* -- Browser mockup ---------------------------------------------------- */
 const ProjectVisual = ({ project }) => {
     const line = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.5, strokeLinecap: 'round', strokeLinejoin: 'round' };
     const artwork = {
@@ -131,7 +66,7 @@ const ProjectVisual = ({ project }) => {
     );
 };
 
-/* ── ProjectCard ── glow + optional 3D flip to an App Store QR ───────── */
+/* -- ProjectCard -- glow + optional 3D flip to an App Store QR --------- */
 const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -157,7 +92,7 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                 animate={{ rotateY: flipped ? 180 : 0 }}
                 transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-                {/* ── FRONT ── */}
+                {/* -- FRONT -- */}
                 <div
                     inert={flipped}
                     className="flip-face relative flex flex-col h-full rounded-2xl overflow-hidden bg-surface/50 backdrop-blur-sm border border-white/5 group-hover:border-primary/30 group-hover:shadow-xl group-hover:shadow-primary/10 transition-colors duration-300"
@@ -227,7 +162,7 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                     </div>
                 </div>
 
-                {/* ── BACK ── App Store QR (desktop flip target) ── */}
+                {/* -- BACK -- App Store QR (desktop flip target) -- */}
                 {project.appStore && (
                     <div
                         inert={!flipped}
@@ -272,7 +207,7 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
     );
 };
 
-/* ── Mobile carousel ─ AnimatePresence single-card with swipe ──────── */
+/* -- Mobile carousel - AnimatePresence single-card with swipe -------- */
 const slideVariants = {
     enter: (dir) => ({ x: dir > 0 ? '70%' : '-70%', opacity: 0 }),
     center: {
@@ -287,8 +222,24 @@ const slideVariants = {
     }),
 };
 
+/* Skills chips ask the carousel to surface a given project - see Skills.jsx */
+const useFocusProject = (onFocus) => {
+    useEffect(() => {
+        const handler = (e) => {
+            const index = e.detail?.index;
+            if (Number.isInteger(index)) onFocus(index);
+        };
+        window.addEventListener(FOCUS_PROJECT_EVENT, handler);
+        return () => window.removeEventListener(FOCUS_PROJECT_EVENT, handler);
+    }, [onFocus]);
+};
+
 const MobileCarousel = ({ projects, shouldReduceMotion }) => {
     const [[page, dir], setPage] = useState([0, 0]);
+
+    useFocusProject(useCallback((index) => {
+        setPage(([p]) => [index, index > p ? 1 : -1]);
+    }, []));
 
     const paginate = (newDir) => {
         setPage(([p]) => {
@@ -346,7 +297,7 @@ const MobileCarousel = ({ projects, shouldReduceMotion }) => {
     );
 };
 
-/* ── Desktop carousel ─ sliding track, 3-up on lg / 2-up on md ───────── */
+/* -- Desktop carousel - sliding track, 3-up on lg / 2-up on md --------- */
 const usePerView = () => {
     const [perView, setPerView] = useState(3);
 
@@ -368,6 +319,17 @@ const DesktopCarousel = ({ projects, shouldReduceMotion }) => {
     const maxPage = Math.max(0, projects.length - perView);
     const clamped = Math.min(page, maxPage);
     const goTo = (p) => setPage(Math.min(Math.max(p, 0), maxPage));
+
+    /* Scroll the requested card into the visible window without moving it further than needed */
+    useFocusProject(useCallback((index) => {
+        setPage((p) => {
+            const limit = Math.max(0, projects.length - perView);
+            const current = Math.min(p, limit);
+            if (index < current) return index;
+            if (index >= current + perView) return Math.min(index - perView + 1, limit);
+            return current;
+        });
+    }, [perView, projects.length]));
 
     return (
         <div
@@ -450,7 +412,7 @@ const DesktopCarousel = ({ projects, shouldReduceMotion }) => {
     );
 };
 
-/* ── Projects section ────────────────────────────────────────────────── */
+/* -- Projects section -------------------------------------------------- */
 const Projects = () => {
     const shouldReduceMotion = useReducedMotion();
     const isMobile = useIsMobile();

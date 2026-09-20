@@ -75,6 +75,14 @@
 .flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .flip-rear { transform: rotateY(180deg); }
 
+/* The two About flip cards sit in separate rows on mobile, where auto-rows-fr is
+   off, so a shared floor keeps them the same size no matter which face is showing */
+.about-flip { min-height: 11.5rem; }
+
+@media (min-width: 768px) {
+  .about-flip { min-height: 0; }
+}
+
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary;
 }
