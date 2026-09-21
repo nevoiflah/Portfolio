@@ -46,17 +46,18 @@ const ZSection = ({ children, index, total }) => {
 
     const opacityTransform = useTransform(
         scrollYProgress,
-        [start - 0.05, start, end - 0.05, end],
+        [start - 0.05, start, index === 0 ? end * 0.5 : end - 0.05, end],
         isLast ? [0, 1, 1, 1] : [0, 1, 1, 0],
     );
 
-    /* Hold at natural size for the whole time the section is readable, then zoom out
-       only over the last 30% - which is exactly when the opacity fade runs. Ramping
+    /* The hero opens gradually into the scene; other sections hold their natural
+       size while readable, then zoom out
+       over the last 30% - which is exactly when the opacity fade runs. Ramping
        1 -> 1.15 across the full range meant content was oversized while being read. */
     const scaleTransform = useTransform(
         scrollYProgress,
-        [start - 0.1, start, end - sectionHeight * 0.3, end],
-        isLast ? [0.5, 1, 1, 1] : [0.5, 1, 1, 1.15],
+        [start - 0.1, start, index === 0 ? start : end - sectionHeight * 0.3, end],
+        isLast ? [0.5, 1, 1, 1] : [0.5, 1, 1, index === 0 ? 1.25 : 1.15],
     );
 
     /* Fold the fit clamp into the Z-depth scale so both stay on one transform */
@@ -67,6 +68,10 @@ const ZSection = ({ children, index, total }) => {
 
     const zIndex = useTransform(scrollYProgress, (v) =>
         v >= start && v <= end ? 10 : 0
+    );
+
+    const pointerEvents = useTransform(scrollYProgress, (v) =>
+        v >= start && (isLast || v < end) ? 'auto' : 'none'
     );
 
     const display = useTransform(scrollYProgress, (v) =>
@@ -87,7 +92,7 @@ const ZSection = ({ children, index, total }) => {
                 height:         '100vh',
                 alignItems:     'center',
                 justifyContent: 'center',
-                pointerEvents:  'auto',
+                pointerEvents,
             }}
         >
             <div ref={contentRef} className="w-full max-w-7xl mx-auto px-6">

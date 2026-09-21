@@ -62,7 +62,7 @@ function App() {
         const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
         // Center on each section's fully-visible scroll window rather than its edge
         lenis.scrollTo(
-          index === count - 1 ? totalHeight : totalHeight * ((index + 0.5) / count),
+          index === 0 ? 0 : index === count - 1 ? totalHeight : totalHeight * ((index + 0.5) / count),
           { duration: 1.5 },
         );
       }

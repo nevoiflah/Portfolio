@@ -16,20 +16,20 @@ A modern, immersive 3D portfolio website built with React and Three.js. This pro
 - **Scroll-Linked Animations**: Camera position, rotation, and color shifts are tightly coupled to scroll progress using Framer Motion and React Three Fiber.
 
 ### Interactive Elements
-- **Magnetic Profile**: The Hero section features a physics-based magnetic profile picture that tracks the mouse cursor using spring animations.
+- **Animated Introduction**: Floating interface elements gather behind the portrait before it moves into the hero layout. The opening supports reduced motion and skipping.
 - **Smart Navigation**: Programmatic scrolling logic detects the target layout (Desktop vs. Mobile) and routes the user to the correct coordinate or DOM element.
 - **Hover Effects**: Glassmorphic cards and interactive buttons respond to user input with subtle elevation and lighting changes.
 
 ### Mobile Optimization
 - **Hybrid Engine**: The site detects the device type and hot-swaps the layout engine.
-    - **Desktop**: Renders the 500vh "Warp Tunnel" Z-stack.
+    - **Desktop**: Renders the 600vh "Warp Tunnel" Z-stack.
     - **Mobile**: Renders a standard vertical stack for native feel and usability on small screens.
 
 ## Technical Stack
 
 - **Framework**: React 19 + Vite
 - **Styling**: Tailwind CSS
-- **3D Graphics**: Three.js, @react-three/fiber, @react-three/drei
+- **3D Graphics**: Three.js, @react-three/fiber
 - **Animations**: Framer Motion
 - **Smooth Scroll**: Lenis
 - **Icons**: Lucide React
@@ -80,7 +80,7 @@ src/
 ## Development Notes
 
 - The 3D scene is rendered on a fixed background canvas with `z-index: -10`.
-- Desktop scrolling works by creating a ghost height of `500vh` and mapping scroll progress (0.0 to 1.0) to Z-axis transforms.
+- Desktop scrolling works by creating a ghost height of `600vh` and mapping scroll progress (0.0 to 1.0) to Z-axis transforms.
 - Mobile scrolling disables the 3D transforms and relies on standard CSS positioning for better performance and touch responsiveness.
 
 ## License
