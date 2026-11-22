@@ -3,43 +3,62 @@ import {
     motion, AnimatePresence,
     useReducedMotion, useMotionValue, useMotionTemplate,
 } from 'framer-motion';
-import { Github, ExternalLink, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { SiAppstore } from 'react-icons/si';
+import { Github, Globe, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { SiAppstore, SiGoogleplay } from 'react-icons/si';
 import useIsMobile from '../hooks/useIsMobile';
 import { projects, FOCUS_PROJECT_EVENT } from '../data/projects';
 
-/* -- App Store action -- mobile: direct link · desktop: flip to QR ------ */
-const AppStoreAction = ({ project, onFlip }) => {
+/* -- Store registry -- key = project field holding the store URL -------- */
+const STORES = {
+    appStore:   { label: 'App Store',   Icon: SiAppstore,   qrField: 'qr' },
+    googlePlay: { label: 'Google Play', Icon: SiGoogleplay, qrField: 'qrPlay' },
+};
+const getStores = (project) => Object.keys(STORES).filter((key) => project[key]);
+
+/* -- IconAction -- round icon button with accent hover + label tooltip --
+   Renders a link when given href, a button when given onClick.
+   Hover colour comes from the card's own accent via --action-accent. */
+const IconAction = ({ icon, label, ariaLabel, accent, href, onClick }) => {
+    const Icon = icon;
+    const className = "group/action relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-text/80 cursor-pointer outline-none transition-all duration-300 ease-out hover:text-[var(--action-accent)] hover:border-[var(--action-accent)] hover:bg-white/[0.08] hover:shadow-[0_0_20px_-4px_var(--action-accent)] focus-visible:text-[var(--action-accent)] focus-visible:border-[var(--action-accent)] focus-visible:shadow-[0_0_20px_-4px_var(--action-accent)] motion-safe:hover:-translate-y-0.5 motion-safe:active:scale-90 active:opacity-80";
+    const content = (
+        <>
+            <Icon size={17} aria-hidden="true" className="transition-transform duration-300 motion-safe:group-hover/action:scale-110" />
+            {/* Label tooltip - hover / keyboard focus */}
+            <span
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 translate-y-1 whitespace-nowrap rounded-md border border-white/10 bg-background/95 px-2 py-1 text-[11px] font-medium text-text opacity-0 shadow-lg transition-all duration-200 group-hover/action:translate-y-0 group-hover/action:opacity-100 group-focus-visible/action:translate-y-0 group-focus-visible/action:opacity-100"
+            >
+                {label}
+            </span>
+        </>
+    );
+    const style = { '--action-accent': accent };
+
+    return href ? (
+        <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel} className={className} style={style}>
+            {content}
+        </a>
+    ) : (
+        <button type="button" onClick={onClick} aria-label={ariaLabel} className={className} style={style}>
+            {content}
+        </button>
+    );
+};
+
+/* -- Store action -- mobile: direct link · desktop: flip to QR ---------- */
+const StoreAction = ({ project, storeKey, onFlip }) => {
     const isMobile = useIsMobile();
+    const { label, Icon } = STORES[storeKey];
+    const shared = { icon: Icon, label, accent: project.accent };
 
     /* Mobile - already on the device, deep-link straight to the store */
     if (isMobile) {
-        return (
-            <a
-                href={project.appStore}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Download ${project.title} on the App Store (opens in new tab)`}
-                className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
-            >
-                <SiAppstore size={16} aria-hidden="true" />
-                App Store
-            </a>
-        );
+        return <IconAction {...shared} href={project[storeKey]} ariaLabel={`Download ${project.title} on ${label} (opens in new tab)`} />;
     }
 
     /* Desktop - flip the card to reveal a scannable QR */
-    return (
-        <button
-            type="button"
-            onClick={onFlip}
-            aria-label={`Show App Store download options for ${project.title}`}
-            className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all cursor-pointer"
-        >
-            <SiAppstore size={16} aria-hidden="true" />
-            App Store
-        </button>
-    );
+    return <IconAction {...shared} onClick={() => onFlip(storeKey)} ariaLabel={`Show ${label} download options for ${project.title}`} />;
 };
 
 
@@ -72,6 +91,10 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
     const mouseY = useMotionValue(0);
     const background = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, rgba(59,130,246,0.10), transparent 40%)`;
     const [flipped, setFlipped] = useState(false);
+    const stores = getStores(project);
+    const [activeStore, setActiveStore] = useState(stores[0]);
+    const active = activeStore && STORES[activeStore];
+    const openStore = (storeKey) => { setActiveStore(storeKey); setFlipped(true); };
 
     const handleMouseMove = (e) => {
         const { left, top } = e.currentTarget.getBoundingClientRect();
@@ -130,48 +153,63 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                                 </span>
                             ))}
                         </div>
-                        <div className="flex items-center gap-4 mt-auto">
+                        <div className="flex items-center justify-center gap-3 mt-auto pt-2">
                             {project.github && (
-                                <a
+                                <IconAction
+                                    icon={Github}
+                                    label="View Code"
+                                    ariaLabel={`View ${project.title} source code on GitHub (opens in new tab)`}
+                                    accent={project.accent}
                                     href={project.github}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`View ${project.title} source code on GitHub (opens in new tab)`}
-                                    className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
-                                >
-                                    <Github size={16} aria-hidden="true" />
-                                    View Code
-                                </a>
+                                />
                             )}
                             {project.live && (
-                                <a
+                                <IconAction
+                                    icon={Globe}
+                                    label="Website"
+                                    ariaLabel={`Visit ${project.title} live website (opens in new tab)`}
+                                    accent={project.accent}
                                     href={project.live}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`Visit ${project.title} live website (opens in new tab)`}
-                                    className="flex items-center gap-2 text-sm font-medium hover:text-primary active:opacity-70 transition-all"
-                                >
-                                    <ExternalLink size={16} aria-hidden="true" />
-                                    Visit Website
-                                </a>
+                                />
                             )}
-                            {project.appStore && (
-                                <AppStoreAction project={project} onFlip={() => setFlipped(true)} />
-                            )}
+                            {stores.map((storeKey) => (
+                                <StoreAction key={storeKey} project={project} storeKey={storeKey} onFlip={openStore} />
+                            ))}
                         </div>
                     </div>
                 </div>
 
-                {/* -- BACK -- App Store QR (desktop flip target) -- */}
-                {project.appStore && (
+                {/* -- BACK -- store QR (desktop flip target) -- */}
+                {active && (
                     <div
                         inert={!flipped}
                         className="flip-face flip-rear flex flex-col items-center justify-center gap-3 h-full rounded-2xl overflow-hidden bg-surface border border-primary/30 p-6 text-center"
                     >
+                        {stores.length > 1 && (
+                            <div role="group" aria-label="Choose app store" className="flex p-1 rounded-full bg-white/5 border border-white/10">
+                                {stores.map((storeKey) => {
+                                    const { label, Icon } = STORES[storeKey];
+                                    const selected = storeKey === activeStore;
+                                    return (
+                                        <button
+                                            key={storeKey}
+                                            type="button"
+                                            onClick={() => setActiveStore(storeKey)}
+                                            aria-pressed={selected}
+                                            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${selected ? 'bg-primary text-white' : 'text-muted hover:text-text'}`}
+                                        >
+                                            <Icon size={12} aria-hidden="true" />
+                                            {label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
                         <div className="rounded-xl bg-white p-3 shadow-lg">
                             <img
-                                src={project.qr}
-                                alt={`QR code to download ${project.title} on the App Store`}
+                                key={activeStore}
+                                src={project[active.qrField]}
+                                alt={`QR code to download ${project.title} on ${active.label}`}
                                 width={150}
                                 height={150}
                                 className="w-[150px] h-[150px]"
@@ -183,14 +221,14 @@ const ProjectCard = ({ project, variants, shouldReduceMotion }) => {
                             <p className="text-xs text-muted mt-0.5">Point your phone camera at the code</p>
                         </div>
                         <a
-                            href={project.appStore}
+                            href={project[activeStore]}
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label={`Open ${project.title} on the App Store (opens in new tab)`}
+                            aria-label={`Open ${project.title} on ${active.label} (opens in new tab)`}
                             className="flex items-center justify-center gap-2 w-full max-w-[210px] px-4 py-2 rounded-full bg-primary text-white text-sm font-medium hover:bg-primary/90 active:scale-95 transition-all"
                         >
-                            <SiAppstore size={16} aria-hidden="true" />
-                            Open App Store
+                            <active.Icon size={16} aria-hidden="true" />
+                            Open {active.label}
                         </a>
                         <button
                             type="button"

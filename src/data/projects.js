@@ -35,6 +35,8 @@ export const projects = [
         live: "https://ringaapp.com",
         appStore: "https://apps.apple.com/il/app/ringa-app/id6757655133",
         qr: "/qr/ringa-appstore.svg",
+        googlePlay: "https://play.google.com/store/apps/details?id=com.ringa.app",
+        qrPlay: "/qr/ringa-googleplay.svg",
         visual: "radar",
         category: "MOBILE · SOCIAL",
         accent: "#3b82f6",
