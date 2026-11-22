@@ -18,8 +18,8 @@ export const projects = [
     },
     {
         title: "Buddiz",
-        description: "A P2P craft beer e-commerce platform featuring secure payments, real-time order tracking, and a dynamic product catalog. Built with a serverless architecture.",
-        tags: ["React", "AWS Lambda", "DynamoDB", "Cognito"],
+        description: "A P2P craft beer e-commerce platform built for a private client on a fully serverless AWS stack. Live PayPal payments, real-time order tracking, automated invoices via SES, and an admin dashboard.",
+        tags: ["React", "Node.js", "AWS Lambda", "DynamoDB", "Cognito", "PayPal"],
         github: "https://github.com/nevoiflah/BuddizProject",
         live: "https://www.buddiz.link",
         visual: "commerce",
@@ -30,8 +30,8 @@ export const projects = [
     },
     {
         title: "RINGA",
-        description: "Hyper-local social app for spontaneous, real-world connections. Proximity radar over a dynamic 75-200 m radius, delayed first messages, Ghost Mode privacy zones, and chats that expire after 24h.",
-        tags: ["React Native", "Expo", "TypeScript", "Express", "PostgreSQL", "WebSockets", "Docker", "Tailwind CSS"],
+        description: "Hyper-local social app built end to end for a private client. Proximity radar over a dynamic 75-200 m radius, delayed first messages, Ghost Mode privacy zones, content moderation, Apple and Google Sign-In, and chats that expire after 24h.",
+        tags: ["React Native", "Expo", "TypeScript", "Express", "PostgreSQL", "Drizzle ORM", "WebSockets", "Docker", "Fly.io"],
         live: "https://ringaapp.com",
         appStore: "https://apps.apple.com/il/app/ringa-app/id6757655133",
         qr: "/qr/ringa-appstore.svg",

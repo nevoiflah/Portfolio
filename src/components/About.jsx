@@ -64,12 +64,12 @@ const About = () => {
                     >
                         <h2 className="text-3xl md:text-4xl font-bold">About Me</h2>
                         <p className="text-muted leading-relaxed text-sm md:text-base">
-                            Full-Stack Developer with hands-on experience in full-stack web development, AI-integrated systems, and cloud-based applications.
-                            Strong background in C#, JavaScript, Python, and RESTful APIs, with proven ability to design scalable solutions through academic and independent projects.
+                            Full-Stack Developer and Computer Science graduate who has shipped three mobile apps to the App Store, built end to end for
+                            private clients and for my own product. I work across React Native, React, Node.js, and AWS, from native SDK bridges to realtime backends.
                         </p>
                         <p className="text-muted leading-relaxed text-sm md:text-base">
-                            Demonstrated leadership from military command experience. Seeking a junior software or full-stack developer role in a technology-driven team
-                            where strong engineering and problem-solving skills can create impact.
+                            Former combat commander in the IDF, used to owning outcomes under pressure. Looking for a software or full-stack developer role in a
+                            product-focused team where strong engineering and problem-solving skills can create impact.
                         </p>
                     </motion.div>
 
@@ -153,7 +153,7 @@ const About = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* CS student - wide, flips to reveal institution and GPA */}
+                    {/* CS degree - wide, flips to reveal institution, years and GPA */}
                     <motion.div
                         variants={itemVariants}
                         className="relative col-span-2 md:col-span-2 flip-3d about-flip"
@@ -189,7 +189,7 @@ const About = () => {
                                     <Award size={18} className="shrink-0 mt-0.5 text-primary" aria-hidden="true" />
                                     <div className="text-left min-w-0">
                                         <p className="text-sm font-semibold text-text leading-tight">Ruppin Academic Center</p>
-                                        <p className="text-xs text-muted mt-0.5">GPA 80</p>
+                                        <p className="text-xs text-muted mt-0.5">Graduated 2026 · GPA 80</p>
                                     </div>
                                 </div>
                                 <button

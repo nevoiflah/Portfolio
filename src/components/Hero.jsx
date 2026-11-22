@@ -82,7 +82,7 @@ const Hero = () => {
 
             <div className="hero-editorial">
                 <p className="hero-availability"><span />Available for roles</p>
-                <p className="hero-eyebrow">Full Stack Developer</p>
+                <p className="hero-eyebrow">Full-Stack Developer</p>
                 <h1 id="hero-title">Nevo Iflah<span className="hero-name-dot" aria-hidden="true"></span></h1>
                 <p className="hero-statement">Thoughtful design.<br /><span>Working code.</span></p>
                 <p className="hero-description">I build web and mobile apps with a focus on how they look, feel, and work.</p>

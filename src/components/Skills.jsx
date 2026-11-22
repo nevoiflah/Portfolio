@@ -3,9 +3,10 @@ import { motion, AnimatePresence, useReducedMotion, useMotionValue, useMotionTem
 import {
     SiJavascript, SiTypescript, SiPython, SiHtml5, SiSharp, SiOpenjdk,
     SiReact, SiNodedotjs, SiDotnet, SiTailwindcss, SiBootstrap, SiFlask,
-    SiGit, SiDocker,
+    SiGit, SiDocker, SiSwift, SiKotlin, SiExpo, SiFramer,
+    SiPostgresql, SiMongodb, SiFirebase,
 } from 'react-icons/si';
-import { Database, Webhook, RefreshCw, Cloud, Smartphone, ArrowUpRight } from 'lucide-react';
+import { Database, Webhook, RefreshCw, Cloud, Smartphone, Radio, ArrowUpRight } from 'lucide-react';
 import { projects, FOCUS_PROJECT_EVENT } from '../data/projects';
 
 /* Icons carry no brand colour - the palette is one blue on greyscale, and a grid
@@ -18,6 +19,8 @@ const techIcons = {
     'SQL':                         Database,
     'Java':                        SiOpenjdk,
     'HTML5/CSS3':                  SiHtml5,
+    'Swift':                       SiSwift,
+    'Kotlin':                      SiKotlin,
     'React':                       SiReact,
     'React Native':                Smartphone,
     'Node.js':                     SiNodedotjs,
@@ -25,7 +28,13 @@ const techIcons = {
     'Tailwind CSS':                SiTailwindcss,
     'Bootstrap':                   SiBootstrap,
     'Flask':                       SiFlask,
+    'Expo':                        SiExpo,
+    'Framer Motion':               SiFramer,
     'AWS (Lambda, IoT, DynamoDB)': Cloud,
+    'PostgreSQL':                  SiPostgresql,
+    'MongoDB':                     SiMongodb,
+    'Firebase':                    SiFirebase,
+    'WebSockets':                  Radio,
     'Git & GitHub':                SiGit,
     'Docker':                      SiDocker,
     'RESTful APIs':                Webhook,
@@ -36,27 +45,35 @@ const techIcons = {
    anything unmatched is simply rendered as a plain, unlinked chip */
 const skillProof = {
     'JavaScript (ES6+)':           ['Buddiz', 'Ruppin Academic Advisor'],
-    'TypeScript':                  ['RINGA', 'COUNT - Intimacy Journal'],
+    'TypeScript':                  ['RINGA', 'NIVORA', 'Buddiz', 'COUNT - Intimacy Journal'],
     'C#':                          ['Ruppin Academic Advisor'],
     'Python':                      ['Ruppin Academic Advisor'],
     'SQL':                         ['RINGA'],
     'HTML5/CSS3':                  ['Buddiz', 'Ruppin Academic Advisor'],
+    'Swift':                       ['NIVORA'],
+    'Kotlin':                      ['NIVORA'],
     'React':                       ['Buddiz', 'Ruppin Academic Advisor'],
     'React Native':                ['NIVORA', 'RINGA', 'COUNT - Intimacy Journal'],
-    'Node.js':                     ['RINGA'],
+    'Node.js':                     ['RINGA', 'Buddiz'],
     'ASP.NET Core':                ['Ruppin Academic Advisor'],
     'Tailwind CSS':                ['RINGA', 'COUNT - Intimacy Journal'],
     'Flask':                       ['Ruppin Academic Advisor'],
+    'Expo':                        ['NIVORA', 'RINGA'],
+    'Framer Motion':               ['RINGA', 'COUNT - Intimacy Journal'],
     'AWS (Lambda, IoT, DynamoDB)': ['Buddiz'],
+    'PostgreSQL':                  ['RINGA'],
+    'MongoDB':                     ['NIVORA', 'Ruppin Academic Advisor'],
+    'Firebase':                    ['NIVORA', 'COUNT - Intimacy Journal'],
+    'WebSockets':                  ['RINGA'],
     'Git & GitHub':                ['Buddiz', 'Ruppin Academic Advisor'],
     'Docker':                      ['RINGA'],
     'RESTful APIs':                ['Buddiz', 'RINGA', 'Ruppin Academic Advisor'],
 };
 
 const skills = {
-    "Languages":         ["JavaScript (ES6+)", "TypeScript", "C#", "Python", "SQL", "Java", "HTML5/CSS3"],
-    "Frameworks & Libs": ["React", "React Native", "Node.js", "ASP.NET Core", "Tailwind CSS", "Bootstrap", "Flask"],
-    "Cloud & Tools":     ["AWS (Lambda, IoT, DynamoDB)", "Git & GitHub", "Docker", "RESTful APIs", "Agile/Scrum"],
+    "Languages":         ["JavaScript (ES6+)", "TypeScript", "C#", "Python", "SQL", "Swift", "Kotlin", "Java", "HTML5/CSS3"],
+    "Frameworks & Libs": ["React", "React Native", "Expo", "Node.js", "ASP.NET Core", "Tailwind CSS", "Framer Motion", "Bootstrap", "Flask"],
+    "Cloud & Data":      ["AWS (Lambda, IoT, DynamoDB)", "PostgreSQL", "MongoDB", "Firebase", "WebSockets", "Git & GitHub", "Docker", "RESTful APIs", "Agile/Scrum"],
 };
 
 const projectIndex = Object.fromEntries(projects.map((p, i) => [p.title, i]));

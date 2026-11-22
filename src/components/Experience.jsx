@@ -1,12 +1,14 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useScroll, useTransform } from 'framer-motion';
-import { Shield, GraduationCap, Rocket, Smartphone, Sparkles } from 'lucide-react';
+import { Shield, GraduationCap, Briefcase, Rocket, Smartphone, Lock, Sparkles } from 'lucide-react';
 
 const milestones = [
-    { icon: Shield, period: 'Foundation', title: 'Military Command', desc: 'Learned to lead, take ownership, and stay composed under pressure.', proof: 'Leadership · Responsibility' },
-    { icon: GraduationCap, period: 'Education', title: 'B.Sc. Computer Science', desc: 'Built strong foundations in software engineering, systems, and problem-solving.', proof: 'Software · Systems · Algorithms' },
-    { icon: Rocket, period: 'First Product', title: 'Buddiz', desc: 'Designed a complete peer-to-peer marketplace using React and AWS.', proof: 'Serverless architecture' },
-    { icon: Smartphone, period: 'Production Mobile', title: 'NIVORA, RINGA & COUNT', desc: 'Shipped cross-platform products spanning native SDKs, realtime systems, privacy, and wellness data.', proof: 'React Native · iOS · Android' },
+    { icon: Shield, period: '2018 - 2021', title: 'Commander in Combat', desc: 'Led a combat unit of 12 in the IDF. Learned to own outcomes under pressure.', proof: 'Leadership · Responsibility' },
+    { icon: GraduationCap, period: '2023 - 2026', title: 'B.Sc. Computer Science', desc: 'Graduated from Ruppin Academic Center.', proof: 'Software · Systems · Algorithms' },
+    { icon: Briefcase, period: 'Dec 2025 - Jan 2026', title: 'Buddiz · Contract', desc: 'Serverless AWS e-commerce for a private client, with live PayPal payments.', proof: 'React · AWS Lambda' },
+    { icon: Rocket, period: 'Jan - Jun 2026', title: 'NIVORA · Founder', desc: 'Built a smart ring wellness app solo, from empty repo to App Store release.', proof: 'React Native · Swift · Kotlin' },
+    { icon: Smartphone, period: 'Apr - Aug 2026', title: 'RINGA · Contract', desc: 'Hyper-local social app built for a client, shipped to App Store and Google Play.', proof: 'React Native · WebSockets' },
+    { icon: Lock, period: 'Independent', title: 'COUNT', desc: 'A privacy-first journaling app and marketing site with on-device analytics.', proof: 'React Native · Next.js · Firebase' },
     { icon: Sparkles, period: 'Today', title: 'Ready for what’s next', desc: 'Looking to join a product-focused engineering team where I can contribute and keep growing.', proof: 'Open to engineering roles', highlight: true },
 ];
 
@@ -68,7 +70,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
         return () => observer.disconnect();
     }, [isPinned, shouldReduceMotion]);
 
-    const heading = <div className="mb-9 text-center md:mb-10"><h2 className="mb-3 text-3xl font-bold md:text-4xl">My Journey</h2><p className="text-sm text-muted md:text-base">Five stages that shaped how I lead, learn, and ship products.</p></div>;
+    const heading = <div className="mb-9 text-center md:mb-10"><h2 className="mb-3 text-3xl font-bold md:text-4xl">My Journey</h2><p className="text-sm text-muted md:text-base">The stages that shaped how I lead, learn, and ship products.</p></div>;
 
     if (!isPinned || shouldReduceMotion) {
         return <section id="experience" className="py-20"><div className="container mx-auto px-6">{heading}<div className="journey-scroll -mx-6 flex snap-x snap-mandatory gap-5 overflow-x-auto px-6 pb-5">{milestones.map((item, index) => <JourneyCard key={item.title} item={item} index={index} />)}</div><p className="mt-2 text-center text-[10px] uppercase tracking-[0.2em] text-white/30 md:hidden">Swipe to explore</p></div></section>;
@@ -80,7 +82,7 @@ const Experience = ({ sectionIndex, sectionTotal }) => {
                 <div className="absolute bottom-[15px] left-3 right-3 h-px bg-white/10" aria-hidden="true"><motion.div style={{ scaleX: lineScaleX }} className="h-full w-full origin-left bg-gradient-to-r from-primary to-secondary" /></div>
                 <motion.div ref={trackRef} style={{ x }} className="flex w-max items-end gap-6 pr-3">{milestones.map((item, index) => <JourneyCard key={item.title} item={item} index={index} progress={journeyProgress} />)}</motion.div>
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.2em] text-white/30" aria-hidden="true"><span>Scroll</span><span className="h-px w-12 bg-white/20" /><span>05</span></div>
+            <div className="mt-3 flex items-center justify-center gap-3 text-[10px] uppercase tracking-[0.2em] text-white/30" aria-hidden="true"><span>Scroll</span><span className="h-px w-12 bg-white/20" /><span>{String(milestones.length).padStart(2, '0')}</span></div>
         </div></section>
     );
 };
